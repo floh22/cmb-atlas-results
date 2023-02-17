@@ -1,0 +1,22 @@
+{
+  "eu": {
+    "latitude": "51.5163999999999",
+    "longitude": "-0.093"
+  },
+  "asia": {
+    "latitude": "34.6851",
+    "longitude": "135.5136"
+  },
+  "oce": {
+    "latitude": "-35.2744",
+    "longitude": "149.1246"
+  },
+  "sa": {
+    "latitude": "-23.5475",
+    "longitude": "-46.6361"
+  },
+  "us": {
+    "latitude": "45.4995",
+    "longitude": "-73.5848"
+  }
+}

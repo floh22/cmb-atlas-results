@@ -1,6 +1,20 @@
 const fs = require('fs');
+const plot = require('nodeplotlib');
+
+// Globals
+
+var allMeasurements = [];
+var nodeData = readNodeData();
+var dataCenters = readDataCenters();
+
 
 // File handling
+
+function readDataCenters() {
+    let rawdata = fs.readFileSync('dataCenters.json');
+    let data = JSON.parse(rawdata);
+    return data;
+}
 
 function readOverview() {
     let rawdata = fs.readFileSync('RIPE-Atlas-AllMeasurements.json');
@@ -14,7 +28,7 @@ function readNodeData() {
 
     let out = {};
 
-    for(let node of data) {
+    for (let node of data) {
         out[node.id] = {
             id: node.id,
             latitude: node.latitude,
@@ -43,7 +57,7 @@ async function downloadMeasurements(measurements) {
         let measurementType = descComponents[descComponents.length - 1];
         //end of variable destription format
 
-        let id= measurement.id;
+        let id = measurement.id;
         let measurementName = `${region}-${mobilityType}-${measurementType}-${id}`;
 
         if (!fs.existsSync(`measurements/${mobilityType}`)) {
@@ -75,11 +89,8 @@ async function verifyFiles() {
     await downloadMeasurements(measurements);
 }
 
-var allMeasurements = [];
-var nodeData = readNodeData();
-
 function loadFiles() {
-    if(!nodeData) {
+    if (!nodeData) {
         nodeData = readNodeData();
     }
     let measurementTypes = fs.readdirSync('measurements');
@@ -92,7 +103,7 @@ function loadFiles() {
             var file = fs.readFileSync(`measurements/${measurementType}/${measurementFile}`);
             var data = JSON.parse(file);
             data.measurementName = fileNameNoEnding;
-            for(measurement of data) {
+            for (measurement of data) {
                 measurement.category = measurementType.toLowerCase();
                 measurement.region = fileNameNoEnding.split('-')[0].toLowerCase();
                 let data = nodeData[measurement.prb_id];
@@ -112,13 +123,13 @@ function loadFiles() {
 // Category filtering
 
 Object.defineProperty(Array.prototype, 'byCategory', {
-    value: function(category) { 
+    value: function (category) {
         let res = [];
         let isArray = Array.isArray(category);
 
-        if(isArray) {
+        if (isArray) {
             for (const measurement of this) {
-                if(category.includes(measurement.category)) {
+                if (category.includes(measurement.category)) {
                     res.push(measurement);
                 }
             }
@@ -127,7 +138,7 @@ Object.defineProperty(Array.prototype, 'byCategory', {
         }
 
         for (const measurement of this) {
-            if(measurement.category === category) {
+            if (measurement.category === category) {
                 res.push(measurement);
             }
         }
@@ -136,13 +147,13 @@ Object.defineProperty(Array.prototype, 'byCategory', {
 });
 
 Object.defineProperty(Array.prototype, 'byRegion', {
-    value: function(region) {
+    value: function (region) {
         let res = [];
         let isArray = Array.isArray(region);
 
-        if(isArray) {
+        if (isArray) {
             for (const measurement of this) {
-                if(region.includes(measurement.region)) {
+                if (region.includes(measurement.region)) {
                     res.push(measurement);
                 }
             }
@@ -151,7 +162,7 @@ Object.defineProperty(Array.prototype, 'byRegion', {
         }
 
         for (const measurement of this) {
-            if(measurement.region === region) {
+            if (measurement.region === region) {
                 res.push(measurement);
             }
         }
@@ -160,13 +171,13 @@ Object.defineProperty(Array.prototype, 'byRegion', {
 });
 
 Object.defineProperty(Array.prototype, 'byCountryCode', {
-    value: function(countryCode) {
+    value: function (countryCode) {
         let res = [];
         let isArray = Array.isArray(countryCode);
 
-        if(isArray) {
+        if (isArray) {
             for (const measurement of this) {
-                if(countryCode.includes(measurement.country_code)) {
+                if (countryCode.includes(measurement.country_code)) {
                     res.push(measurement);
                 }
             }
@@ -175,7 +186,7 @@ Object.defineProperty(Array.prototype, 'byCountryCode', {
         }
 
         for (const measurement of this) {
-            if(measurement.country_code === countryCode) {
+            if (measurement.country_code === countryCode) {
                 res.push(measurement);
             }
         }
@@ -184,17 +195,17 @@ Object.defineProperty(Array.prototype, 'byCountryCode', {
 });
 
 Object.defineProperty(Array.prototype, 'byType', {
-    value: function(type) {
+    value: function (type) {
         let res = [];
         let isArray = Array.isArray(type);
 
-        if(isArray && type.includes('ping') && type.includes('traceroute')) {
+        if (isArray && type.includes('ping') && type.includes('traceroute')) {
             return this;
         }
 
         for (const measurement of this) {
 
-            if(measurement.type === type) {
+            if (measurement.type === type) {
                 res.push(measurement);
             }
         }
@@ -202,15 +213,27 @@ Object.defineProperty(Array.prototype, 'byType', {
     }
 });
 
+Object.defineProperty(Array.prototype, 'groupByNodes', {
+    value: function (type) {
+        let nodes = {};
+        for (const measurement of this) {
+            let nodeid = measurement.prb_id;
+            if (nodes[nodeid] === undefined) {
+                nodes[nodeid] = [];
+            }
+            nodes[nodeid].push(measurement);
+        }
 
+        return nodes;
+    }
+});
 
 function getMeasurementsSortedByTimeOfDay(m) {
     let measurementsByTimeOfDay = {};
-    if(m === undefined || m === null)
-    {
+    if (m === undefined || m === null) {
         m = allMeasurements;
     }
-    
+
     for (const measurement of m) {
         let timestamp = measurement.timestamp;
         let timeOfDay = new Date(timestamp * 1000).getHours();
@@ -227,8 +250,7 @@ function getMeasurementsSortedByTimeOfDay(m) {
 function getMeasurementsByCountryCode(m) {
 
     let measurementsByCountryCode = {};
-    if(m === undefined || m === null)
-    {
+    if (m === undefined || m === null) {
         m = allMeasurements;
     }
 
@@ -243,16 +265,34 @@ function getMeasurementsByCountryCode(m) {
     return measurementsByCountryCode;
 }
 
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
+
+function getDistanceBetweenCoordinates(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+}
+
 
 // Single measurement handling
 
 function getAveragePing(measurements) {
-    if(measurements.length === 0) {
+    if (measurements.length === 0) {
         return NaN;
     }
     let total = 0;
     for (const measurement of measurements) {
-        if(isNaN(measurement.avg)) {
+        if (isNaN(measurement.avg)) {
             continue;
         }
         total += measurement.avg;
@@ -264,7 +304,7 @@ function getAveragePing(measurements) {
 function getWorstCaseAveragePing(measurements) {
     let total = 0;
     for (const measurement of measurements) {
-        if(isNaN(measurement.max)) {
+        if (isNaN(measurement.max)) {
             continue;
         }
         total += measurement.max;
@@ -276,7 +316,7 @@ function getWorstCaseAveragePing(measurements) {
 function getBestCaseAveragePing(measurements) {
     let total = 0;
     for (const measurement of measurements) {
-        if(isNaN(measurement.min)) {
+        if (isNaN(measurement.min)) {
             continue;
         }
         total += measurement.min;
@@ -288,12 +328,12 @@ function getBestCaseAveragePing(measurements) {
 function getMeanPing(measurements, bucketSize) {
     let buckets = {};
     for (const measurement of measurements) {
-        if(isNaN(measurement.avg)) {
+        if (isNaN(measurement.avg)) {
             continue;
         }
 
         let bucket = Math.max(Math.floor(measurement.avg / bucketSize), 0) * bucketSize;
-        if(bucket === 0) {
+        if (bucket === 0) {
             bucket = 1;
         }
 
@@ -322,6 +362,30 @@ function getMedianPing(measurements) {
     else {
         return (sortedMeasurements[middle - 1].avg + sortedMeasurements[middle].avg) / 2.0;
     }
+}
+
+function getAvereageAndMaxAndMinPing(measurements) {
+    let total = 0;
+    let max = 0;
+    let min = 9999
+    for (const measurement of measurements) {
+        if (isNaN(measurement.avg)) {
+            continue;
+        }
+        total += measurement.avg;
+        if (measurement.avg > max) {
+            max = measurement.avg;
+        }
+        if (measurement.avg < min) {
+            min = measurement.avg;
+        }
+    }
+
+    return {
+        avg: total / measurements.length,
+        max: max,
+        min: min
+    };
 }
 
 
@@ -404,12 +468,180 @@ function init() {
 
         console.log('----------');
 
+
+        //Latency vs distance plotting in europe
+
         let euByCountry = getMeasurementsByCountryCode(euPing);
 
         //print average ping for each country in EU
-        for(const [countryCode, measurements] of Object.entries(euByCountry)) {
+        for (const [countryCode, measurements] of Object.entries(euByCountry)) {
             console.log(`${countryCode}: ${getAveragePing(measurements).toFixed(2)}`);
         }
+
+        console.log('----------');
+
+        let pingMeasurements = allMeasurements.byType('ping');
+        let measurementsByNodes = pingMeasurements.byCategory('home').groupByNodes();
+        let nodeDataEuHome = [];
+        for(const [node, measurements] of Object.entries(measurementsByNodes)) {
+            let pingData = getAvereageAndMaxAndMinPing(measurements);
+            nodeDataEuHome.push({node, ...pingData});
+        }
+
+        let avgAvg = nodeDataEuHome.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuHome.length;
+        let maxAvg = nodeDataEuHome.map(x => x.max).reduce((a, b) => a + b, 0) / nodeDataEuHome.length;
+        let minAvg = nodeDataEuHome.map(x => x.min).reduce((a, b) => a + b, 0) / nodeDataEuHome.length;
+
+        console.log(`home avg avg ping: ${avgAvg.toFixed(2)}`);
+        console.log(`home avg max ping: ${maxAvg.toFixed(2)}`);
+        console.log(`home avg min ping: ${minAvg.toFixed(2)}`);
+
+
+        console.log('----------');
+
+        let measurementsByNodesLTE = pingMeasurements.byCategory('lte').groupByNodes();
+
+        let nodeDataEuLTE = [];
+        for(const [node, measurements] of Object.entries(measurementsByNodesLTE)) {
+            let pingData = getAvereageAndMaxAndMinPing(measurements);
+            nodeDataEuLTE.push({node, ...pingData});
+        }
+
+        let avgAvgLTE = nodeDataEuLTE.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuLTE.length;
+        let maxAvgLTE = nodeDataEuLTE.map(x => x.max).reduce((a, b) => a + b, 0) / nodeDataEuLTE.length;
+        let minAvgLTE = nodeDataEuLTE.map(x => x.min).reduce((a, b) => a + b, 0) / nodeDataEuLTE.length;
+
+        console.log(`lte avg avg ping: ${avgAvgLTE.toFixed(2)}`);
+        console.log(`lte avg max ping: ${maxAvgLTE.toFixed(2)}`);
+        console.log(`lte avg min ping: ${minAvgLTE.toFixed(2)}`);
+
+
+        console.log('----------');
+
+        let measurementsByNodesWifi = pingMeasurements.byCategory('wifi').groupByNodes();
+
+        let nodeDataEuWifi = [];
+        for(const [node, measurements] of Object.entries(measurementsByNodesWifi)) {
+            let pingData = getAvereageAndMaxAndMinPing(measurements);
+            nodeDataEuWifi.push({node, ...pingData});
+        }
+
+        let avgAvgWifi = nodeDataEuWifi.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuWifi.length;
+        let maxAvgWifi = nodeDataEuWifi.map(x => x.max).reduce((a, b) => a + b, 0) / nodeDataEuWifi.length;
+        let minAvgWifi = nodeDataEuWifi.map(x => x.min).reduce((a, b) => a + b, 0) / nodeDataEuWifi.length;
+
+        console.log(`wifi avg avg ping: ${avgAvgWifi.toFixed(2)}`);
+        console.log(`wifi avg max ping: ${maxAvgWifi.toFixed(2)}`);
+        console.log(`wifi avg min ping: ${minAvgWifi.toFixed(2)}`);
+
+
+        console.log('----------');
+
+        let measurementsByNodesStarlink = pingMeasurements.byCategory('sl').groupByNodes();
+
+        let nodeDataEuStarlink = [];
+        for(const [node, measurements] of Object.entries(measurementsByNodesStarlink)) {
+            let pingData = getAvereageAndMaxAndMinPing(measurements);
+            nodeDataEuStarlink.push({node, ...pingData});
+        }
+
+        let avgAvgStarlink = nodeDataEuStarlink.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuStarlink.length;
+        let maxAvgStarlink = nodeDataEuStarlink.map(x => x.max).reduce((a, b) => a + b, 0) / nodeDataEuStarlink.length;
+        let minAvgStarlink = nodeDataEuStarlink.map(x => x.min).reduce((a, b) => a + b, 0) / nodeDataEuStarlink.length;
+
+        console.log(`starlink avg avg ping: ${avgAvgStarlink.toFixed(2)}`);
+        console.log(`starlink avg max ping: ${maxAvgStarlink.toFixed(2)}`);
+        console.log(`starlink avg min ping: ${minAvgStarlink.toFixed(2)}`);
+
+
+        return;
+
+        let euDistanceAndLatency = [];
+        for (const m of allMeasurements.byType('ping').byRegion('europe').byCategory('home')) {
+            let distance = getDistanceBetweenCoordinates(m.latitude, m.longitude, dataCenters['eu'].latitude, dataCenters['eu'].longitude);
+            let latency = m.avg;
+
+            if (latency <= 0 || latency >= 200) {
+                continue;
+            }
+
+            euDistanceAndLatency.push({ distance, latency });
+        }
+
+
+
+        //scatter plot
+        const plotData = [{
+            x: euDistanceAndLatency.map(x => x.distance),
+            y: euDistanceAndLatency.map(x => x.latency),
+            mode: 'markers',
+            type: 'scatter',
+        }];
+
+
+        //box plot 
+
+        /* bad idea.
+        //ground distanceAndLatency by 100km groups
+        let latencyByDistanceBinned = {};
+        for (const d of euDistanceAndLatency) {
+            let distanceGroup = Math.floor(d.distance / 100);
+            if (!latencyByDistanceBinned[distanceGroup]) {
+                latencyByDistanceBinned[distanceGroup] = [];
+            }
+
+            latencyByDistanceBinned[distanceGroup].push(d.latency);
+        }
+
+        let distances = Object.entries(latencyByDistanceBinned);
+
+        let boxData = [];
+        let i = 0;
+        for (const dist of distances) {
+            let name = `${i * 100} - ${(i + 1) * 100}km`;
+            boxData.push({
+                y: dist,
+                type: 'box',
+                name: name,
+            });
+            i++;
+        }
+
+        // plot.plot(boxData);
+
+        */
+
+        var layout = {
+            title: {
+                text: 'Latency by distance in Europe',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 24
+                },
+                xref: 'paper',
+            },
+            xaxis: {
+                title: {
+                    text: 'Distance in km',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                    }
+                },
+            },
+            yaxis: {
+                title: {
+                    text: 'Ping latency in ms',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                    }
+                }
+            }
+        };
+
+        plot.plot(plotData, layout);
+
 
         //as we can see, ping latency is closely related to distance, except for outliers such as Iran since nodes here were offline
     });
@@ -422,4 +654,4 @@ init();
 setInterval(() => {
     console.log('still alive');
 }
-, 1000 * 60 * 60);
+    , 1000 * 60 * 60);
