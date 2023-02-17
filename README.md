@@ -11,8 +11,7 @@ Wired connections were the most stable of all technologies studied. The average 
 
 This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 1. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
 
-*** TODO: Add proper link
-![alt text](https://github.com/floh22/cmb-atlas-results/tree/master)
+![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png)
 ### Wifi
 
 Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
