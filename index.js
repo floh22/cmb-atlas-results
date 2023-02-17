@@ -224,6 +224,26 @@ function getMeasurementsSortedByTimeOfDay(m) {
 }
 
 
+function getMeasurementsByCountryCode(m) {
+
+    let measurementsByCountryCode = {};
+    if(m === undefined || m === null)
+    {
+        m = allMeasurements;
+    }
+
+    for (const measurement of m) {
+        let countryCode = measurement.country_code;
+        if (measurementsByCountryCode[countryCode] === undefined) {
+            measurementsByCountryCode[countryCode] = [];
+        }
+        measurementsByCountryCode[countryCode].push(measurement);
+    }
+
+    return measurementsByCountryCode;
+}
+
+
 // Single measurement handling
 
 function getAveragePing(measurements) {
@@ -380,6 +400,18 @@ function init() {
         console.log(`oce starlink avg ping: ${oceStarlinkAvg.toFixed(2)}`);
         console.log(`us starlink avg ping: ${usStarlinkAvg.toFixed(2)}`);
         console.log(`sa starlink avg ping: ${saStarlinkAvg.toFixed(2)}`);
+
+
+        console.log('----------');
+
+        let euByCountry = getMeasurementsByCountryCode(euPing);
+
+        //print average ping for each country in EU
+        for(const [countryCode, measurements] of Object.entries(euByCountry)) {
+            console.log(`${countryCode}: ${getAveragePing(measurements).toFixed(2)}`);
+        }
+
+        //as we can see, ping latency is closely related to distance, except for outliers such as Iran since nodes here were offline
     });
 }
 
