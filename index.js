@@ -70,8 +70,8 @@ function loadFiles() {
             var data = JSON.parse(file);
             data.measurementName = fileNameNoEnding;
             for(measurement of data) {
-                measurement.category = measurementType;
-                measurement.region = fileNameNoEnding.split('-')[0];
+                measurement.category = measurementType.toLowerCase();
+                measurement.region = fileNameNoEnding.split('-')[0].toLowerCase();
             }
 
             allMeasurements.push(...data);
@@ -89,6 +89,18 @@ function loadFiles() {
 Object.defineProperty(Array.prototype, 'byCategory', {
     value: function(category) { 
         let res = [];
+        let isArray = Array.isArray(category);
+
+        if(isArray) {
+            for (const measurement of this) {
+                if(category.includes(measurement.category)) {
+                    res.push(measurement);
+                }
+            }
+
+            return res;
+        }
+
         for (const measurement of this) {
             if(measurement.category === category) {
                 res.push(measurement);
@@ -101,6 +113,18 @@ Object.defineProperty(Array.prototype, 'byCategory', {
 Object.defineProperty(Array.prototype, 'byRegion', {
     value: function(region) {
         let res = [];
+        let isArray = Array.isArray(region);
+
+        if(isArray) {
+            for (const measurement of this) {
+                if(region.includes(measurement.region)) {
+                    res.push(measurement);
+                }
+            }
+
+            return res;
+        }
+
         for (const measurement of this) {
             if(measurement.region === region) {
                 res.push(measurement);
@@ -113,7 +137,14 @@ Object.defineProperty(Array.prototype, 'byRegion', {
 Object.defineProperty(Array.prototype, 'byType', {
     value: function(type) {
         let res = [];
+        let isArray = Array.isArray(type);
+
+        if(isArray && type.includes('ping') && type.includes('traceroute')) {
+            return this;
+        }
+
         for (const measurement of this) {
+
             if(measurement.type === type) {
                 res.push(measurement);
             }
@@ -147,6 +178,9 @@ function getMeasurementsSortedByTimeOfDay(m) {
 // Single measurement handling
 
 function getAveragePing(measurements) {
+    if(measurements.length === 0) {
+        return NaN;
+    }
     let total = 0;
     for (const measurement of measurements) {
         if(isNaN(measurement.avg)) {
@@ -158,7 +192,7 @@ function getAveragePing(measurements) {
     return total / measurements.length;
 }
 
-function getMaxPing(measurements) {
+function getWorstCaseAveragePing(measurements) {
     let total = 0;
     for (const measurement of measurements) {
         if(isNaN(measurement.max)) {
@@ -170,8 +204,19 @@ function getMaxPing(measurements) {
     return total / measurements.length;
 }
 
+function getBestCaseAveragePing(measurements) {
+    let total = 0;
+    for (const measurement of measurements) {
+        if(isNaN(measurement.min)) {
+            continue;
+        }
+        total += measurement.min;
+    }
 
-function getNumberOfMeasurementsByPing(measurements, bucketSize) {
+    return total / measurements.length;
+}
+
+function getMeanPing(measurements, bucketSize) {
     let buckets = {};
     for (const measurement of measurements) {
         if(isNaN(measurement.avg)) {
@@ -189,13 +234,9 @@ function getNumberOfMeasurementsByPing(measurements, bucketSize) {
         buckets[bucket]++;
     }
 
-    return buckets;
-}
-
-function getMeanPing(measurementsInBuckets) {
     let total = 0;
     let measurementCount = 0;
-    for (const [bucket, bucketSize] of Object.entries(measurementsInBuckets)) {
+    for (const [bucket, bucketSize] of Object.entries(buckets)) {
         total += bucket * bucketSize;
         measurementCount += bucketSize;
     }
@@ -215,8 +256,6 @@ function getMedianPing(measurements) {
 }
 
 
-
-
 // Main
 
 function init() {
@@ -224,48 +263,18 @@ function init() {
         console.log('files verified');
         loadFiles();
 
-        /*
-        console.log(`home average ping: ${homeAveragePing}`);
-        console.log(`home mean ping: ${homeMeanPing}`);
 
-        console.log(`wifi average ping: ${wifiAveragePing}`);
-        console.log(`wifi mean ping: ${wifiMeanPing}`);
+        let euPing = allMeasurements.byType('ping').byRegion('europe');
+        let asiaPing = allMeasurements.byType('ping').byRegion('asia');
+        let ocePing = allMeasurements.byType('ping').byRegion('oce');
+        let usPing = allMeasurements.byType('ping').byRegion('us');
+        let saPing = allMeasurements.byType('ping').byRegion('sa');
 
-        console.log(`lte average ping: ${lteAveragePing}`);
-        console.log(`lte mean ping: ${lteMeanPing}`);
-
-        console.log(`sl average ping: ${slAveragePing}`);
-        console.log(`sl mean ping: ${slMeanPing}`);
-        */
-
-        /*
-        console.log(`home max ping: ${getMaxPing(homeMeasurements)}`);
-        console.log(`wifi max ping: ${getMaxPing(wifiMeasurements)}`);
-        console.log(`sl max ping: ${getMaxPing(slMeasurements)}`);
-        */
-
-        /*
-        let pingMeasurements = allMeasurements.byType('ping');
-        let europeanPingMeasurements = pingMeasurements.byRegion('Europe');
-        let europeanPingMeasurementsByTimeOfDay = getMeasurementsSortedByTimeOfDay(europeanPingMeasurements);
-        
-        let euPingTimeOfDayHome = {};
-        let euPingTimeOfDayStarlink = {};
-        for (const [timeOfDay, measurements] of Object.entries(europeanPingMeasurementsByTimeOfDay)) {
-            euPingTimeOfDayHome[timeOfDay] = getAveragePing(measurements.byCategory('home'));
-            euPingTimeOfDayStarlink[timeOfDay] = getAveragePing(measurements.byCategory('SL'));
-        }
-
-        console.log(euPingTimeOfDayHome);
-        console.log(euPingTimeOfDayStarlink);
-        */
-
-
-        let euHome = allMeasurements.byType('ping').byRegion('Europe').byCategory('home');
-        let asiaHome = allMeasurements.byType('ping').byRegion('Asia').byCategory('home');
-        let oceHome = allMeasurements.byType('ping').byRegion('OCE').byCategory('home');
-        let usHome = allMeasurements.byType('ping').byRegion('US').byCategory('home');
-        let saHome = allMeasurements.byType('ping').byRegion('SA').byCategory('home');
+        let euHome = euPing.byCategory('home');
+        let asiaHome = asiaPing.byCategory('home');
+        let oceHome = ocePing.byCategory('home');
+        let usHome = usPing.byCategory('home');
+        let saHome = saPing.byCategory('home');
 
         let euAvg = getAveragePing(euHome);
         let asiaAvg = getAveragePing(asiaHome);
@@ -273,11 +282,56 @@ function init() {
         let usAvg = getAveragePing(usHome);
         let saAvg = getAveragePing(saHome);
 
-        console.log(`eu avg ping: ${euAvg.toFixed(2)}`);
-        console.log(`asia avg ping: ${asiaAvg.toFixed(2)}`);
-        console.log(`oce avg ping: ${oceAvg.toFixed(2)}`);
-        console.log(`us avg ping: ${usAvg.toFixed(2)}`);
-        console.log(`sa avg ping: ${saAvg.toFixed(2)}`);
+        console.log(`eu home avg ping: ${euAvg.toFixed(2)}`);
+        console.log(`asia home avg ping: ${asiaAvg.toFixed(2)}`);
+        console.log(`oce home avg ping: ${oceAvg.toFixed(2)}`);
+        console.log(`us home avg ping: ${usAvg.toFixed(2)}`);
+        console.log(`sa home avg ping: ${saAvg.toFixed(2)}`);
+
+
+        console.log('----------');
+
+
+        let euLTEAvg = getAveragePing(euPing.byCategory('lte'));
+        let asiaLTEAvg = getAveragePing(asiaPing.byCategory('lte'));
+        let oceLTEAvg = getAveragePing(ocePing.byCategory('lte'));
+        let usLTEAvg = getAveragePing(usPing.byCategory('lte'));
+        let saLTEAvg = getAveragePing(saPing.byCategory('lte'));
+
+        console.log(`eu lte avg ping: ${euLTEAvg.toFixed(2)}`);
+        console.log(`asia lte avg ping: ${asiaLTEAvg.toFixed(2)}`);
+        console.log(`oce lte avg ping: ${oceLTEAvg.toFixed(2)}`);
+        console.log(`us lte avg ping: ${usLTEAvg.toFixed(2)}`);
+        console.log(`sa lte avg ping: ${saLTEAvg.toFixed(2)}`);
+
+        console.log('----------');
+
+        let euWifiAvg = getAveragePing(euPing.byCategory('wifi'));
+        let asiaWifiAvg = getAveragePing(asiaPing.byCategory('wifi'));
+        let oceWifiAvg = getAveragePing(ocePing.byCategory('wifi'));
+        let usWifiAvg = getAveragePing(usPing.byCategory('wifi'));
+        let saWifiAvg = getAveragePing(saPing.byCategory('wifi'));
+
+        console.log(`eu wifi avg ping: ${euWifiAvg.toFixed(2)}`);
+        console.log(`asia wifi avg ping: ${asiaWifiAvg.toFixed(2)}`);
+        console.log(`oce wifi avg ping: ${oceWifiAvg.toFixed(2)}`);
+        console.log(`us wifi avg ping: ${usWifiAvg.toFixed(2)}`);
+        console.log(`sa wifi avg ping: ${saWifiAvg.toFixed(2)}`);
+
+        console.log('----------');
+
+        let euStarlinkAvg = getAveragePing(euPing.byCategory('sl'));
+        let asiaStarlinkAvg = getAveragePing(asiaPing.byCategory('sl'));
+        let oceStarlinkAvg = getAveragePing(ocePing.byCategory('sl'));
+        let usStarlinkAvg = getAveragePing(usPing.byCategory('sl'));
+        let saStarlinkAvg = getAveragePing(saPing.byCategory('sl'));
+
+        console.log(`eu starlink avg ping: ${euStarlinkAvg.toFixed(2)}`);
+        console.log(`asia starlink avg ping: ${asiaStarlinkAvg.toFixed(2)}`);
+        console.log(`oce starlink avg ping: ${oceStarlinkAvg.toFixed(2)}`);
+        console.log(`us starlink avg ping: ${usStarlinkAvg.toFixed(2)}`);
+        console.log(`sa starlink avg ping: ${saStarlinkAvg.toFixed(2)}`);
+
 
     });
 }
