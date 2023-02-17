@@ -8,6 +8,25 @@ function readOverview() {
     return measurements;
 }
 
+function readNodeData() {
+    let rawdata = fs.readFileSync('data.json');
+    let data = JSON.parse(rawdata);
+
+    let out = {};
+
+    for(let node of data) {
+        out[node.id] = {
+            id: node.id,
+            latitude: node.latitude,
+            longitude: node.longitude,
+            country_code: node.country_code,
+            asn_v4: node.asn_v4,
+            asn_v6: node.asn_v6
+        }
+    }
+    return out;
+}
+
 
 async function downloadMeasurements(measurements) {
     if (!fs.existsSync('measurements')) {
@@ -57,8 +76,12 @@ async function verifyFiles() {
 }
 
 var allMeasurements = [];
+var nodeData = readNodeData();
 
 function loadFiles() {
+    if(!nodeData) {
+        nodeData = readNodeData();
+    }
     let measurementTypes = fs.readdirSync('measurements');
     let filesLoaded = 0;
     for (const measurementType of measurementTypes) {
@@ -72,6 +95,8 @@ function loadFiles() {
             for(measurement of data) {
                 measurement.category = measurementType.toLowerCase();
                 measurement.region = fileNameNoEnding.split('-')[0].toLowerCase();
+                let data = nodeData[measurement.prb_id];
+                Object.assign(measurement, data);
             }
 
             allMeasurements.push(...data);
@@ -331,8 +356,6 @@ function init() {
         console.log(`oce starlink avg ping: ${oceStarlinkAvg.toFixed(2)}`);
         console.log(`us starlink avg ping: ${usStarlinkAvg.toFixed(2)}`);
         console.log(`sa starlink avg ping: ${saStarlinkAvg.toFixed(2)}`);
-
-
     });
 }
 
