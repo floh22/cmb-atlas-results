@@ -159,6 +159,30 @@ Object.defineProperty(Array.prototype, 'byRegion', {
     }
 });
 
+Object.defineProperty(Array.prototype, 'byCountryCode', {
+    value: function(countryCode) {
+        let res = [];
+        let isArray = Array.isArray(countryCode);
+
+        if(isArray) {
+            for (const measurement of this) {
+                if(countryCode.includes(measurement.country_code)) {
+                    res.push(measurement);
+                }
+            }
+
+            return res;
+        }
+
+        for (const measurement of this) {
+            if(measurement.country_code === countryCode) {
+                res.push(measurement);
+            }
+        }
+        return res;
+    }
+});
+
 Object.defineProperty(Array.prototype, 'byType', {
     value: function(type) {
         let res = [];
