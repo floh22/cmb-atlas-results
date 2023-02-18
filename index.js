@@ -553,6 +553,70 @@ function init() {
         console.log(`starlink avg max ping: ${maxAvgStarlink.toFixed(2)}`);
         console.log(`starlink avg min ping: ${minAvgStarlink.toFixed(2)}`);
 
+        let trace1 = {
+            x: ['avg', 'max', 'min'],
+            y: [avgAvg, maxAvg, minAvg],
+            name: 'home',
+            type: 'bar'
+        }
+
+        let trace2 = {
+            x: ['avg', 'max', 'min'],
+            y: [avgAvgLTE, maxAvgLTE, minAvgLTE],
+            name: 'lte',
+            type: 'bar'
+        }
+
+        let trace3 = {
+            x: ['avg', 'max', 'min'],
+            y: [avgAvgWifi, maxAvgWifi, minAvgWifi],
+            name: 'wifi',
+            type: 'bar'
+        }
+
+        let trace4 = {
+            x: ['avg', 'max', 'min'],
+            y: [avgAvgStarlink, maxAvgStarlink, minAvgStarlink],
+            name: 'starlink',
+            type: 'bar'
+        }
+
+        let data = [trace1, trace2, trace3, trace4];
+
+        let boxLayout = {
+            barmode: 'group',
+            title: {
+                text: 'Observed ping by technology',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 24
+                },
+                xref: 'paper',
+            },
+            /*
+            xaxis: {
+                title: {
+                    text: 'Technologies',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                    }
+                },
+            },
+            */
+            yaxis: {
+                title: {
+                    text: 'Ping latency in ms',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                    }
+                }
+            }
+        };
+
+        plot.plot(data, boxLayout);
+
 
         return;
 
