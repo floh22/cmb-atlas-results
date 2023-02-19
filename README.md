@@ -10,7 +10,6 @@
 In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we show where and how we retrieved the data from the RIPE Platform by using the api provided by RIPE Atlas. 
 
 
-
 ## Probe Selection
 
 To reproduce our probe selection we provide the shell script do_probe_selection.sh in [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection). 
@@ -95,7 +94,7 @@ In the following two parts we describe the parameters that we used to gather our
 |Parameter| Setting|
 | ----------- | ----------- |
 | Target | google server on the same continent (exception Africa which also uses europe ): <br/><ul><li>us-central1.gce.cloudharmony.net</li><li>europe-west3.gce.cloudharmony.net</li><li>asia-northeast2.gce.cloudharmony.net</li><li>australia-southeast1.gce.cloudharmony.net</li><li>southamerica-east1.gce.cloudharmony.net</li></ul>|
-| Interval (s) | <ul><li>Long time frame: </li><li>Short time frame: 21600</li></ul>|
+| Interval (s) | <ul><li>Long time frame: 86400</li><li>Short time frame: 21600</li></ul>|
 | Protocol | TCP |
 | Address Family | IPV4 |
 | Response Timeout (ms)| 4000 |
@@ -106,9 +105,20 @@ In the following two parts we describe the parameters that we used to gather our
 | Maximum Hops | 32 |
 | Resolve on Probe | False |
 
+## Disscusion
 
-## Access Technology Comparison and Analysis
+By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
+
+
+![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
+Fig 2. Probe Location by country
+
+
+
+# Access Technology Comparison and Analysis
 
 
 ![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png)
