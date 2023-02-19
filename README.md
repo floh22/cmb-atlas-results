@@ -1,13 +1,14 @@
 <h1 align="center">Connected Mobility Probe Report</h1>
 
 
-## Introduction
+# Introduction
 
 
 # Measurement Steps
 
 
-In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we show where and how we retrieved the data from the RIPE Platform by using the api provided by RIPE Atlas. 
+In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we disscuss if and how our probe selection represents the global mobile connectivity.
+
 
 
 ## Probe Selection
@@ -107,17 +108,19 @@ In the following two parts we describe the parameters that we used to gather our
 
 ## Disscusion
 
-By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
-A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region [[1]].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
 
 ![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
 Fig 2. Probe Location by country
 
+# Results and Discussion
 
+The analysis was conducted using latency as the major metric, and the experiments were varied based on 2 factors namely (1) the impact of different technologies used by networks, (2) the impact of distance between the probes and the cloud centers.
 
-# Access Technology Comparison and Analysis
+## Access Technology Comparison and Analysis
 
 <p align="center">
   <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
@@ -135,10 +138,13 @@ Wired connections were the most stable of all technologies studied. The average 
 
 This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 2. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
 
-<figure align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
-  <figcaption>Fig 6. Variation of latency with probe-data center distance in Europe.</figcaption>
-</figure>
+<p align="center">
+<img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
+</p>
+
+<p align="center">
+Fig 6. Variation of latency with probe-data center distance in Europe.
+</p>
 
 ### Wifi
 
@@ -161,6 +167,7 @@ Where we perceive starlink's current biggest weakness to be is within its reliab
 Additionally, the starlink network also seems to have longer periods of general instability, as can be seen in Fig 4. Long term study during the last day of observation. Performance on this day was degraded during multiple times and multiple pings were non responsive, leading to lower average ping times shown since pings that could not be received had a latency of 0ms, dropping the average significantly during this period.
 
 We can however conclude that when the starlink network does function properly, it allows for performance rivaling that of wired connections, and with further maturity of the technology and cross satelite communication, stability issues may become less common and the network a reliable and fast option, even for those in densly populated areas.
+
 <p align="center">
   <img alt="Starlink short term results graph" src="./images/SL_short.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
@@ -184,4 +191,9 @@ Fig 4. Starlink ping average in both long and short term tests
 Fig 5. Home and Wireless ping average in long term tests
 </p>
 
-## Conclusion
+# Conclusion
+
+# References
+
+[1]: <https://doi.org/10.1145/3487552.3487854> "The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79." 
+[[1]]: The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79.
