@@ -15,16 +15,15 @@ Our filtered list can be found in the archive file probe_list.zip.
 ## Filter settings 
 This sction describes our filter settings for the different types of probes. 
 
-### Starlink: 
+### Starlink
     | Filter | Description |
     | ----------- | ----------- |
     | asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered the probes by the ASN accociated with starlink |
     | status == 1| we only uesd nodes that were reported as active| 
 
-    -> status: status == 1
-    # not uses because it did not generate additional nodes -> starlink-tag: starlink in tags 
+    We did not filter by starlink in tags as this did not generate additional nodes.
 
-#### Mobile Data:
+#### Mobile Data
     -> status: status == 1
     -> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
     and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
@@ -38,7 +37,7 @@ This sction describes our filter settings for the different types of probes.
     -> taged as wifi connected: output_dict = [x for x in data if 'wifi-mesh' in x['tags'] or 'system-wifi' in x['tags'] or 'public-wifi' in x['tags'] or 'wifi' in x['tags'] or 'wi-fi' in x['tags'] or 'free-wifi' in x['tags'] or 'wlan' in x['tags']]
     
 
-### Home LAN:
+### Home LAN
     -> status: status == 1
     -> is taged as wired to ISP: output_dict = [x for x in data if 'dsl'  in x['tags'] or 'vdsl'  in x['tags'] or 'vdsl2'  in x['tags'] or 'adsl'  in x['tags'] or 'fibre'  in x['tags']  or 'ftth'  in x['tags'] or 'cabel'  in x['tags']]
     -> is not wireless connected: output_dict = [x for x in data if 'wifi-mesh' not in x['tags']  and 'system-wifi'  not in  x['tags']  and 'public-wifi'  not in  x['tags']  and 'wifi'  not in  x['tags']  and 'wi-fi'  not in  x['tags']  and 'free-wifi'  not in  x['tags']  and 'wlan'  not in  x['tags']]
