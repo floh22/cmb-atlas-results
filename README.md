@@ -121,8 +121,29 @@ Fig 2. Probe Location by country
 
 <figure align="center">
   <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
-  <figcaption>Fig 1. Variation of average, minimum and maximum ping latency with technology.</figcaption>
+  <figcaption>Fig 3. Variation of average, minimum and maximum ping latency with technology.</figcaption>
 </figure>
+
+
+<p align="center">
+  <img alt="Light" src="./images/SL_short.png" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="./images/SL_long.png" width="45%">
+</p>
+
+Fig 4. Starlink ping average in both long and short term tests
+
+
+
+
+
+<p align="center">
+  <img alt="Light" src="./images/Home_short.png" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="./images/LTE_short.png" width="45%">
+</p>
+
+Fig 5. Home and Wireless ping average in long term tests
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
 
@@ -134,7 +155,7 @@ This was also the connection type where we could see the highest correlation bet
 
 <figure align="center">
   <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
-  <figcaption>Fig 2. Variation of latency with probe-data center distance in Europe.</figcaption>
+  <figcaption>Fig 6. Variation of latency with probe-data center distance in Europe.</figcaption>
 </figure>
 
 ### Wifi
