@@ -147,7 +147,7 @@ This was also the connection type where we could see the highest correlation bet
 </p>
 
 <p align="center">
-Fig 6. Variation of latency with probe-data center distance in Europe.
+Fig 4. Variation of latency with probe-data center distance in Europe.
 </p>
 
 ### Wifi
@@ -160,15 +160,23 @@ Average worst case deviation from the average ping was observed at around 40ms h
 
 ### 3G / 4G / 5G
 
+<p align="center">
+    <img alt="TR proportion second to last hop" src="./images/tr_prop.png" >
+</p>
+
+<p align="center">
+Fig 5. Proportion of time required by the first and second hop to the last hop in a traceroute.
+</p>
+
 To our surprise, this was observed to the worst performing technology in normal circumstances. While we had expected starlink devices to have the highest average latency, under normal conditions mobile data pings were around 80ms globaly.
 
 ### Starlink
 
 On average, starlink performed very similarly to wired connections. Global average pings for starlink devices were measured to be within 2 - 4ms when averaging each devices pings. Certain regions however benefitted less from the satelite network than others. Regions such as the EU with a relatively dense and well connected wired population in average an additional 20ms latency on starlink connections instead of wired ones, whereas nodes in australia for example had comparable performance from both technologies in many cases.
 
-Where we perceive starlink's current biggest weakness to be is within its reliability. Over the course of one week we saw at least five different occurances where performance of the starlink technology strongly decreased for short durations, most noticable during the end of our testing period, with one occurance where pings using the starlink network failed entirely for over an hour. This suggests that starlink suffers from short term outages and performance issues, as can be seen in Fig 4. Long term study on Feb 18th at 11:00 and the Short term study on Feb 14th at 04:00.
+Where we perceive starlink's current biggest weakness to be is within its reliability. Over the course of one week we saw at least five different occurances where performance of the starlink technology strongly decreased for short durations, most noticable during the end of our testing period, with one occurance where pings using the starlink network failed entirely for over an hour. This suggests that starlink suffers from short term outages and performance issues, as can be seen in Fig 6. Long term study on Feb 18th at 11:00 and the Short term study on Feb 14th at 04:00.
 
-Additionally, the starlink network also seems to have longer periods of general instability, as can be seen in Fig 4. Long term study during the last day of observation. Performance on this day was degraded during multiple times and multiple pings were non responsive, leading to lower average ping times shown since pings that could not be received had a latency of 0ms, dropping the average significantly during this period.
+Additionally, the starlink network also seems to have longer periods of general instability, as can be seen in Fig 6. Long term study during the last day of observation. Performance on this day was degraded during multiple times and multiple pings were non responsive, leading to lower average ping times shown since pings that could not be received had a latency of 0ms, dropping the average significantly during this period.
 
 We can however conclude that when the starlink network does function properly, it allows for performance rivaling that of wired connections, and with further maturity of the technology and cross satelite communication, stability issues may become less common and the network a reliable and fast option, even for those in densly populated areas.
 
@@ -179,7 +187,7 @@ We can however conclude that when the starlink network does function properly, i
 </p>
 
 <p align="center">
-Fig 4. Starlink ping average in both long and short term tests
+Fig 6. Starlink ping average in both long and short term tests
 </p>
 
 
@@ -192,7 +200,7 @@ Fig 4. Starlink ping average in both long and short term tests
 </p>
 
 <p align="center">
-Fig 5. Home and Wireless ping average in long term tests
+Fig 7. Home and Wireless ping average in long term tests
 </p>
 
 # Conclusion
