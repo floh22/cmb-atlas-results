@@ -16,12 +16,12 @@ Our filtered list can be found in the archive file probe_list.zip.
 This sction describes our filter settings for the different types of probes. 
 
 ### Starlink
-    | Filter | Description |
-    | ----------- | ----------- |
-    | asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered the probes by the ASN accociated with starlink |
-    | status == 1| we only uesd nodes that were reported as active| 
+| Filter | Description |
+| ----------- | ----------- |
+| asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered the probes by the ASN accociated with starlink |
+| status == 1| we only uesd nodes that were reported as active| 
 
-    We did not filter by starlink in tags as this did not generate additional nodes.
+We did not filter by starlink in tags as this did not generate additional nodes.
 
 #### Mobile Data
     -> status: status == 1
@@ -31,10 +31,10 @@ This sction describes our filter settings for the different types of probes.
  
 
 #### Home WI-FI:
-    -> status: status == 1
-    -> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
-    and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
-    -> taged as wifi connected: output_dict = [x for x in data if 'wifi-mesh' in x['tags'] or 'system-wifi' in x['tags'] or 'public-wifi' in x['tags'] or 'wifi' in x['tags'] or 'wi-fi' in x['tags'] or 'free-wifi' in x['tags'] or 'wlan' in x['tags']]
+-> status: status == 1
+-> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
+and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
+-> taged as wifi connected: output_dict = [x for x in data if 'wifi-mesh' in x['tags'] or 'system-wifi' in x['tags'] or 'public-wifi' in x['tags'] or 'wifi' in x['tags'] or 'wi-fi' in x['tags'] or 'free-wifi' in x['tags'] or 'wlan' in x['tags']]
     
 
 ### Home LAN
