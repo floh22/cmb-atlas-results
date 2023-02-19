@@ -119,11 +119,13 @@ Fig 2. Probe Location by country
 
 # Access Technology Comparison and Analysis
 
-<figure align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text" width="100%"/>
-  <figcaption>Fig 3. Variation of average, minimum and maximum ping latency with technology.</figcaption>
-</figure>
+<p align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+</p>
 
+<p align="center">
+    <figcaption>Fig 3. Variation of average, minimum and maximum ping latency with technology.</figcaption>
+</p>
 
 <p align="center">
   <img alt="Starlink short term results graph" src="./images/SL_short.png" width="45%">
