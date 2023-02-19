@@ -821,6 +821,29 @@ function init() {
         console.log(`mean eu home: ${proportionSecondToLastEuHomeMean.toFixed(2)}`);
         console.log(`mean asia lte: ${proportionSecondToLastAsiaLTEMean.toFixed(2)}`);
 
+
+        let trData = [
+            {
+                x: ['eu lte', 'eu home', 'asia lte'],
+                y: [proportionSecondToLastEuLTEMean, proportionSecondToLastEuHomeMean, proportionSecondToLastAsiaLTEMean],
+                type: 'bar'
+            }
+        ];
+        
+
+        let trLayout = {
+            title: 'Proportion of second to last hop',
+            xaxis: {
+                title: 'Region'
+            },
+            yaxis: {
+                title: 'Proportion'
+            }
+        };
+
+        //plot.plot(trData, trLayout);
+
+
         /*
         let lteFirstFiltered = lteFirst.filter(function (value) {
             return !Number.isNaN(value);
