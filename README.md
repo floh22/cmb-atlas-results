@@ -169,6 +169,11 @@ Fig 5. Proportion of time required by the first and second hop to the last hop i
 </p>
 
 To our surprise, this was observed to the worst performing technology in normal circumstances. While we had expected starlink devices to have the highest average latency, under normal conditions mobile data pings were around 80ms globaly.
+When looking into what contributed to the delay we find interesting data hiding in the traceroute.
+By comparing how much the first two hops contributed to the overall delay we found no significant change between mobile data connections compared to wired connections.
+When comparing the contribution the last mile had on the total delay in Europe and Asia for mobile data to the same last mile contribution in wired scenarios we found no significant change.
+This is an indication that if edge computing would be deployed a connection based on mobile data connections could experience an equal improvement in delay reduction.
+
 
 ### Starlink
 
