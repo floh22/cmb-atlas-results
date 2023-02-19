@@ -30,6 +30,8 @@ It does the following steps to retrieve suitable nodes.
 
 The probe selection we used is based on the list as provided by RIPE Atlas on 11-Feb-2023 and can be retrieved [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). To reproduce our result list with the provided scripted please exchange the url in line 29 in the do_probe_selection.sh file with this link [https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). 
 
+
+
 In the following section the filter criteria are explained. 
 
 ### Starlink
@@ -69,7 +71,6 @@ We did not filter by starlink in tags as this did not generate additional nodes.
 
 ## Measurements
 
-
 We performed measurements over two different time horizons.
 One long term another over a shorter time frame with measurements more often.
 
@@ -79,11 +80,31 @@ The results of the long term measurements can be found [here](https://github.com
 In the following two parts we describe the parameters that we used to gather our measurements. First the parameters we used for the ping measurements, second the traceroute measurements. In general the parameters between the two different time horizons are the same except where it is highlighted. 
 
 ### Ping parameters
+|Parameter| Setting|
+| ----------- | ----------- |
+| Target | google server on the same continent (exception Africa which also uses europe ): <br/><ul><li>us-central1.gce.cloudharmony.net</li><li>europe-west3.gce.cloudharmony.net</li><li>asia-northeast2.gce.cloudharmony.net</li><li>australia-southeast1.gce.cloudharmony.net</li><li>southamerica-east1.gce.cloudharmony.net</li></ul>|
+| Interval (s) | <ul><li>Long time frame: 21600</li><li>Short time frame: 1800</li></ul>|
+| Packets | 3|
+| Size | 48 |
+| Address Family | IPV4 |
+| Resolve on Probe |False |
 
 
 
 ### Traceroute parameters
-
+|Parameter| Setting|
+| ----------- | ----------- |
+| Target | google server on the same continent (exception Africa which also uses europe ): <br/><ul><li>us-central1.gce.cloudharmony.net</li><li>europe-west3.gce.cloudharmony.net</li><li>asia-northeast2.gce.cloudharmony.net</li><li>australia-southeast1.gce.cloudharmony.net</li><li>southamerica-east1.gce.cloudharmony.net</li></ul>|
+| Interval (s) | <ul><li>Long time frame: </li><li>Short time frame: 21600</li></ul>|
+| Protocol | TCP |
+| Address Family | IPV4 |
+| Response Timeout (ms)| 4000 |
+| Packets | 3 |
+| Port | 80 |
+| Size | 48 |
+| Paris | 16 |
+| Maximum Hops | 32 |
+| Resolve on Probe | False |
 
 
 ## Access Technology Comparison and Analysis
