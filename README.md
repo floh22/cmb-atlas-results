@@ -112,7 +112,6 @@ A proposed reason behind this overrepresentation of above average connection is 
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
 
-
 ![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
 Fig 2. Probe Location by country
 
@@ -120,9 +119,10 @@ Fig 2. Probe Location by country
 
 # Access Technology Comparison and Analysis
 
-
-![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png)
-Fig 1.
+<figure align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+  <figcaption>Fig 1. Variation of average, minimum and maximum ping latency with technology.</figcaption>
+</figure>
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
 
@@ -132,8 +132,11 @@ Wired connections were the most stable of all technologies studied. The average 
 
 This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 2. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
 
-![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png)
-Fig 2.
+<figure align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
+  <figcaption>Fig 2. Variation of latency with probe-data center distance in Europe.</figcaption>
+</figure>
+
 ### Wifi
 
 Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
