@@ -150,13 +150,13 @@ This was also the connection type where we could see the highest correlation bet
 Fig 4. Variation of latency with probe-data center distance in Europe.
 </p>
 
-### Wifi
+### WiFi
 
-Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
+WiFi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WiFi connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a WiFi connection, which would explain our stellar results from WiFi. 
 
-In comparison to a wired connection, WIFI was observed to have an average ping 9ms slower, which is roughly in line with the overhead one could expect from the extra access point between the end device and the rest of the network.
+In comparison to a wired connection, WiFi was observed to have an average ping 9ms slower, which is roughly in line with the overhead one could expect from the extra access point between the end device and the rest of the network.
 
-Average worst case deviation from the average ping was observed at around 40ms higher, meaning that with a global average of 76ms, the average worst case ping times of 113ms deviated relatively little from the average. This little deviation makes wifi the most comparable technology to a wired connection, though again, we are relatively sure this is due to the testing environment.
+Average worst case deviation from the average ping was observed at around 40ms higher, meaning that with a global average of 76ms, the average worst case ping times of 113ms deviated relatively little from the average. This little deviation makes WiFi the most comparable technology to a wired connection, though again, we are relatively sure this is due to the testing environment.
 
 ### 3G / 4G / 5G
 
@@ -187,7 +187,7 @@ We can however conclude that when the starlink network does function properly, i
 </p>
 
 <p align="center">
-Fig 6. Starlink ping average in both long and short term tests
+Fig 6. Starlink ping average in both long and short term tests respectively
 </p>
 
 
