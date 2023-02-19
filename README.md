@@ -3,6 +3,10 @@
 
 ## Introduction
 
+# Mesurment Steps
+
+
+
 ## Probe Selection
 
 To rerun our probe selection run the bash script do_probe_selection.sh in the [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection).
@@ -50,6 +54,13 @@ We did not filter by starlink in tags as this did not generate additional nodes.
 |tags don't contain  ['3g', '4g', 'lte', '5g', 'mobile'] |we don't considered  nodes that are taged with mobile technologie|
 |tags contaion one of ['home', 'office' , or 'academic'] | we only considere probes taht are taged as home or office or academic|
 |country_code in list of country codes of either wifi, mobile or starlink| to esnure that we have nearby nodes we considered as many nodes that had the same country code as the others up to a maximum number of five per country.|
+
+## Measurments 
+
+We performed measurmets over two differrent time horizons. 
+One long term another over a shorter timeframe with mesurments more often. 
+
+The results of the long term measurments can be found [here](https://github.com/floh22/cmb-atlas-results/tree/master/long_term_measurements/measurements), the results of the other measurment [here](https://github.com/floh22/cmb-atlas-results/tree/master/measurements)
 
 ## Access Technology Comparison and Analysis
 
