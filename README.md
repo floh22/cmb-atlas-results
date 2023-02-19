@@ -8,32 +8,37 @@
 To rerun our probe selection run the bash script do_probe_selection.sh in the probe_selection folder
 
 This should first download the newest list of probes and filter with the same filters we applied. 
-Or selection was based on the probe list published on 11-Feb-2023 as found here:(https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2)
+Or selection was based on the probe list published on 11-Feb-2023 as found [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2)
 To reproduce our filter on this date change the url in line 29 to this. 
 Our filtered list can be found in the archive file probe_list.zip.
 
 ## Filter settings 
+This sction describes our filter settings for the different types of probes. 
 
-Starlink: 
-    -> asn: asn_v4 == 14593 || asn_v6 == 14593
+### Starlink: 
+    | Filter | Description |
+    | ----------- | ----------- |
+    | asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered the probes by the ASN accociated with starlink |
+    | status == 1| we only uesd nodes that were reported as active| 
+
     -> status: status == 1
     # not uses because it did not generate additional nodes -> starlink-tag: starlink in tags 
 
-Mobile Data:
+#### Mobile Data:
     -> status: status == 1
     -> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
     and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
     -> is taged with mobile technologie: output_dict = [x for x in data if '3g' in x['tags'] or '4g' in x['tags'] or 'lte' in x['tags'] or '5g' in x['tags'] or 'mobile' in x['tags']]
  
 
-Home WI-FI:
+#### Home WI-FI:
     -> status: status == 1
     -> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
     and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
     -> taged as wifi connected: output_dict = [x for x in data if 'wifi-mesh' in x['tags'] or 'system-wifi' in x['tags'] or 'public-wifi' in x['tags'] or 'wifi' in x['tags'] or 'wi-fi' in x['tags'] or 'free-wifi' in x['tags'] or 'wlan' in x['tags']]
     
 
-Home LAN:
+### Home LAN:
     -> status: status == 1
     -> is taged as wired to ISP: output_dict = [x for x in data if 'dsl'  in x['tags'] or 'vdsl'  in x['tags'] or 'vdsl2'  in x['tags'] or 'adsl'  in x['tags'] or 'fibre'  in x['tags']  or 'ftth'  in x['tags'] or 'cabel'  in x['tags']]
     -> is not wireless connected: output_dict = [x for x in data if 'wifi-mesh' not in x['tags']  and 'system-wifi'  not in  x['tags']  and 'public-wifi'  not in  x['tags']  and 'wifi'  not in  x['tags']  and 'wi-fi'  not in  x['tags']  and 'free-wifi'  not in  x['tags']  and 'wlan'  not in  x['tags']]
