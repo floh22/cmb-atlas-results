@@ -110,12 +110,15 @@ In the following two parts we describe the parameters that we used to gather our
 ## Disscusion
 
 By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region [[1]].
-A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity, it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
-
-![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
+<p align="center">
+  <img src="./images/countries.png" alt="Probe Location in pie chart"/>
+</p>
+<p align="center">
 Fig 2. Probe Location by country
+</p>
 
 # Results and Discussion
 
@@ -124,11 +127,11 @@ The analysis was conducted using latency as the major metric, and the experiment
 ## Access Technology Comparison and Analysis
 
 <p align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+  <img src="./images/average-ping-node-by-technology.png" alt="average, minimum, and maximum ping latency with technology"/>
 </p>
 
 <p align="center">
-    Fig 3. Variation of average, minimum and maximum ping latency with technology.
+    Fig 3. Variation of average, minimum, and maximum ping latency with technology.
 </p>
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
@@ -193,8 +196,17 @@ Fig 5. Home and Wireless ping average in long term tests
 </p>
 
 # Conclusion
+RIPE Atlas as Global measurement platform provides various insights into the inner operations of the internet. While various factors affect the performance of the network, this report focuses mainly on the last-mile technology and the probe-data center distance. First, a direct proprtional relationship cannot be made between distance and latency, due to various other factors such as technology, network traffic and anomolies. However, a strong correlation exists between these two. Furthermore, in terms of technology, wired communication offers the maximum reliability, whereas the stability of starlink changes sporadically. Thus, based on our observations we can conclude that (1) the distance plays a significant role in the overall latency of communication; (2) despite the distance, the last mile-carrier should have high reliability to ensure stability of communication within the network; and (3) the measurement platform, time of measurement and various other anomolies can also have significant impact when finding the variation of latency with different factors.
 
 # References
 
+[[1]] The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79.
+
+
+[[2]] Lorenzo Corneo, Maximilian Eder, Nitinder Mohan, Aleksandr Zavodovski, Suzan Bayhan, Walter Wong, Per Gunningberg, Jussi Kangasharju, and Jörg Ott. 2021. Surrounded by the Clouds: A Comprehensive Cloud Reachability Study. In Proceedings of the Web Conference 2021 (WWW '21). Association for Computing Machinery, New York, NY, USA, 295–304.
+
+
 [1]: <https://doi.org/10.1145/3487552.3487854> "The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79." 
-[[1]]: The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79.
+
+
+[2]: <https://doi.org/10.1145/3442381.3449854> "Lorenzo Corneo, Maximilian Eder, Nitinder Mohan, Aleksandr Zavodovski, Suzan Bayhan, Walter Wong, Per Gunningberg, Jussi Kangasharju, and Jörg Ott. 2021. Surrounded by the Clouds: A Comprehensive Cloud Reachability Study. In Proceedings of the Web Conference 2021 (WWW '21). Association for Computing Machinery, New York, NY, USA, 295–304."
