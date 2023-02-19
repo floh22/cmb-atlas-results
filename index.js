@@ -17,7 +17,8 @@ function readDataCenters() {
 }
 
 function readOverview() {
-    let rawdata = fs.readFileSync('RIPE-Atlas-AllMeasurements.json');
+    //let rawdata = fs.readFileSync('RIPE-Atlas-AllMeasurements.json');
+    let rawdata = fs.readFileSync('./long_term_measurements/measurements/measurements_my.json');
     let measurements = JSON.parse(rawdata).results;
     return measurements;
 }
@@ -47,24 +48,71 @@ async function downloadMeasurements(measurements) {
         fs.mkdirSync('measurements');
     }
 
+    if (!fs.existsSync('longterm_measurements')) {
+        fs.mkdirSync('longterm_measurements');
+    }
+
     for await (const measurement of measurements) {
         let desc = measurement.description;
 
         // Change these to fit your description format
+        /* Lars format
         let descComponents = desc.split(' ');
         let region = descComponents[0];
         let mobilityType = descComponents[1];
         let measurementType = descComponents[descComponents.length - 1];
+        */
         //end of variable destription format
+
+
+        let descComponents = desc.split(' ');
+        let region = '';
+        if (desc.includes('america')) {
+            region = desc[0].startsWith('n') ? 'us' : 'sa';
+        } else if (desc.includes('oce')) {
+            region = 'oce';
+        } else if (desc.includes('asia')) {
+            region = 'asia';
+        } else if (desc.includes('europe')) {
+            region = 'europe';
+        } else {
+            region = 'af';
+        }
+
+        let mobilityType;
+
+        if (desc.includes('lte')) {
+            mobilityType = 'LTE';
+        } else if (desc.includes('wifi')) {
+            mobilityType = 'wifi';
+        } else if (desc.includes('starlink')) {
+            mobilityType = 'sl';
+        } else {
+            mobilityType = 'home';
+        }
+
+
+        let measurementType = 'ping';
+
+        if (desc.toLowerCase().includes('traceroute')) {
+            measurementType = 'traceroute';
+        }
+
+        let folder = 'measurements';
+
+        if (measurement.start_time < 1676200000) {
+            folder = 'longterm_measurements';
+        }
+
 
         let id = measurement.id;
         let measurementName = `${region}-${mobilityType}-${measurementType}-${id}`;
 
-        if (!fs.existsSync(`measurements/${mobilityType}`)) {
-            fs.mkdirSync(`measurements/${mobilityType}`);
+        if (!fs.existsSync(`${folder}/${mobilityType}`)) {
+            fs.mkdirSync(`${folder}/${mobilityType}`);
         }
 
-        if (fs.existsSync(`measurements/${mobilityType}/${measurementName}.json`)) {
+        if (fs.existsSync(`${folder}/${mobilityType}/${measurementName}.json`)) {
             continue;
         }
 
@@ -78,7 +126,7 @@ async function downloadMeasurements(measurements) {
 
         let rawMeasurementData = await response.text();
 
-        fs.writeFileSync(`measurements/${mobilityType}/${measurementName}.json`, rawMeasurementData);
+        fs.writeFileSync(`${folder}/${mobilityType}/${measurementName}.json`, rawMeasurementData);
         console.log(`downloaded measurement ${region}-${mobilityType}-${measurementType}`);
     }
 }
@@ -89,18 +137,23 @@ async function verifyFiles() {
     await downloadMeasurements(measurements);
 }
 
-function loadFiles() {
+function loadFiles(longTerm) {
     if (!nodeData) {
         nodeData = readNodeData();
     }
-    let measurementTypes = fs.readdirSync('measurements');
+    let folder = 'measurements';
+    if (longTerm) {
+        folder = 'longterm_measurements';
+    }
+
+    let measurementTypes = fs.readdirSync(folder);
     let filesLoaded = 0;
     for (const measurementType of measurementTypes) {
 
-        let measurementsOfType = fs.readdirSync(`measurements/${measurementType}`);
+        let measurementsOfType = fs.readdirSync(`${folder}/${measurementType}`);
         for (const measurementFile of measurementsOfType) {
             var fileNameNoEnding = measurementFile.split('.')[0];
-            var file = fs.readFileSync(`measurements/${measurementType}/${measurementFile}`);
+            var file = fs.readFileSync(`${folder}/${measurementType}/${measurementFile}`);
             var data = JSON.parse(file);
             data.measurementName = fileNameNoEnding;
             for (measurement of data) {
@@ -241,6 +294,31 @@ function getMeasurementsSortedByTimeOfDay(m) {
             measurementsByTimeOfDay[timeOfDay] = [];
         }
         measurementsByTimeOfDay[timeOfDay].push(measurement);
+    }
+
+    return measurementsByTimeOfDay;
+}
+
+function roundToHour(date) {
+    p = 60 * 60 * 1000; // milliseconds in an hour
+    return new Date(Math.round(date.getTime() / p) * p);
+}
+
+
+function getMeasurementsSortedByTimeInHourBuckets(m) {
+    let measurementsByTimeOfDay = {};
+    if (m === undefined || m === null) {
+        m = allMeasurements;
+    }
+
+    for (const measurement of m) {
+        let timestamp = measurement.timestamp;
+        let timeString = roundToHour(new Date(timestamp * 1000));
+        let time = timeString.getTime();
+        if (measurementsByTimeOfDay[time] === undefined) {
+            measurementsByTimeOfDay[time] = [];
+        }
+        measurementsByTimeOfDay[time].push(measurement);
     }
 
     return measurementsByTimeOfDay;
@@ -394,7 +472,7 @@ function getAvereageAndMaxAndMinPing(measurements) {
 function init() {
     verifyFiles().then(() => {
         console.log('files verified');
-        loadFiles();
+        loadFiles(false);
 
 
         let euPing = allMeasurements.byType('ping').byRegion('europe');
@@ -471,21 +549,109 @@ function init() {
 
         //Latency vs distance plotting in europe
 
+        /*
         let euByCountry = getMeasurementsByCountryCode(euPing);
 
         //print average ping for each country in EU
         for (const [countryCode, measurements] of Object.entries(euByCountry)) {
             console.log(`${countryCode}: ${getAveragePing(measurements).toFixed(2)}`);
         }
+        */
 
         console.log('----------');
 
         let pingMeasurements = allMeasurements.byType('ping');
+
+
+
+
+        let starlinkMeasurements = pingMeasurements.byCategory('lte');
+
+        let starlinkMeasurementsByTimeOfDay = getMeasurementsSortedByTimeInHourBuckets(starlinkMeasurements);
+
+
+        let starlinkTimeOfDayMap = []
+
+        for (const [timeOfDay, measurements] of Object.entries(starlinkMeasurementsByTimeOfDay)) {
+            let pingData = getAvereageAndMaxAndMinPing(measurements).avg;
+            starlinkTimeOfDayMap.push({ timeOfDay, pingData});
+        }
+
+
+        starlinkTimeOfDayMap = starlinkTimeOfDayMap.sort((a, b) => {
+            return a.timeOfDay - b.timeOfDay;
+        });
+
+
+
+        let starlinkTimeOfDayPlotData = [{
+            x: starlinkTimeOfDayMap.map(x => {
+                let timeString = new Date(parseInt(x.timeOfDay)).toString();
+                let parts = timeString.split(' ');
+                let timeParts = parts[4].split(':');
+                return `${parts[1]} ${parts[2]} ${timeParts[0]}:${timeParts[1]} `;
+            }),
+            y: starlinkTimeOfDayMap.map(x => x.pingData),
+            // mode: 'markers',
+            type: 'scatter',
+        }];
+
+        let starlinkLayout = {
+            title: 'Wireless (LTE/3G/4G) Ping Latency',
+            xaxis: {
+                title: '',
+                titlefont: {
+                    family: 'Arial, sans-serif',
+                    size: 18,
+                    color: 'lightgrey'
+                },
+                showticklabels: true,
+                tickangle: 'auto',
+                tickfont: {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    color: 'black'
+                },
+                exponentformat: 'e',
+                showexponent: 'all',
+                automargin: true
+            },
+            yaxis: {
+                title: 'Ping latency in ms',
+                titlefont: {
+                    family: 'Arial, sans-serif',
+                    size: 18,
+                    color: 'black'
+                },
+                showticklabels: true,
+                tickangle: 'auto',
+                tickfont: {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    color: 'black'
+                },
+                exponentformat: 'e',
+                showexponent: 'all',
+                automargin: true
+            }
+        };
+
+
+        plot.plot(starlinkTimeOfDayPlotData, starlinkLayout);
+
+        return;
+
+
+
+        // average, max, min ping by technology plotting
+
+
+
         let measurementsByNodes = pingMeasurements.byCategory('home').groupByNodes();
         let nodeDataEuHome = [];
-        for(const [node, measurements] of Object.entries(measurementsByNodes)) {
+        for (const [node, measurements] of Object.entries(measurementsByNodes)) {
             let pingData = getAvereageAndMaxAndMinPing(measurements);
-            nodeDataEuHome.push({node, ...pingData});
+            nodeDataEuHome.push({ node, ...pingData });
         }
 
         let avgAvg = nodeDataEuHome.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuHome.length;
@@ -502,9 +668,9 @@ function init() {
         let measurementsByNodesLTE = pingMeasurements.byCategory('lte').groupByNodes();
 
         let nodeDataEuLTE = [];
-        for(const [node, measurements] of Object.entries(measurementsByNodesLTE)) {
+        for (const [node, measurements] of Object.entries(measurementsByNodesLTE)) {
             let pingData = getAvereageAndMaxAndMinPing(measurements);
-            nodeDataEuLTE.push({node, ...pingData});
+            nodeDataEuLTE.push({ node, ...pingData });
         }
 
         let avgAvgLTE = nodeDataEuLTE.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuLTE.length;
@@ -521,9 +687,9 @@ function init() {
         let measurementsByNodesWifi = pingMeasurements.byCategory('wifi').groupByNodes();
 
         let nodeDataEuWifi = [];
-        for(const [node, measurements] of Object.entries(measurementsByNodesWifi)) {
+        for (const [node, measurements] of Object.entries(measurementsByNodesWifi)) {
             let pingData = getAvereageAndMaxAndMinPing(measurements);
-            nodeDataEuWifi.push({node, ...pingData});
+            nodeDataEuWifi.push({ node, ...pingData });
         }
 
         let avgAvgWifi = nodeDataEuWifi.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuWifi.length;
@@ -540,9 +706,9 @@ function init() {
         let measurementsByNodesStarlink = pingMeasurements.byCategory('sl').groupByNodes();
 
         let nodeDataEuStarlink = [];
-        for(const [node, measurements] of Object.entries(measurementsByNodesStarlink)) {
+        for (const [node, measurements] of Object.entries(measurementsByNodesStarlink)) {
             let pingData = getAvereageAndMaxAndMinPing(measurements);
-            nodeDataEuStarlink.push({node, ...pingData});
+            nodeDataEuStarlink.push({ node, ...pingData });
         }
 
         let avgAvgStarlink = nodeDataEuStarlink.map(x => x.avg).reduce((a, b) => a + b, 0) / nodeDataEuStarlink.length;
@@ -619,6 +785,10 @@ function init() {
 
 
         return;
+
+
+
+        //Latency by distance scatter plot
 
         let euDistanceAndLatency = [];
         for (const m of allMeasurements.byType('ping').byRegion('europe').byCategory('home')) {
