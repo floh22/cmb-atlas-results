@@ -126,9 +126,9 @@ Fig 2. Probe Location by country
 
 
 <p align="center">
-  <img alt="Light" src="./images/SL_short.png" width="45%">
+  <img alt="Starlink short term results graph" src="./images/SL_short.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./images/SL_long.png" width="45%">
+  <img alt="Starlink long term results graph" src="./images/SL_long_term.png" width="45%">
 </p>
 
 Fig 4. Starlink ping average in both long and short term tests
@@ -138,9 +138,9 @@ Fig 4. Starlink ping average in both long and short term tests
 
 
 <p align="center">
-  <img alt="Light" src="./images/Home_short.png" width="45%">
+  <img alt="Home long term results graph" src="./images/Home_short.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./images/LTE_short.png" width="45%">
+  <img alt="Wireless long term results graph" src="./images/LTE_short.png" width="45%">
 </p>
 
 Fig 5. Home and Wireless ping average in long term tests
