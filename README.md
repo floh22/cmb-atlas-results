@@ -3,6 +3,7 @@
 
 # Introduction
 
+Global measurement platforms such as RIPE Atlas allows users to measure internet acitivity and network accessibility through physical and software probes. The availiability of these platforms enables users to troubleshoot issues and identify bottlenecks when accessing different network service from various locations around the world. The objective of this assignment is to identify the major factors which affect the overall internet performance in terms of the routing path between clients and servers, as well as the last-mile technology used for communicatoin.
 
 # Measurement Steps
 
