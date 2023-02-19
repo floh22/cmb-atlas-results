@@ -10,7 +10,6 @@
 In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we show where and how we retrieved the data from the RIPE Platform by using the api provided by RIPE Atlas. 
 
 
-
 ## Probe Selection
 
 To reproduce our probe selection we provide the shell script do_probe_selection.sh in [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection). 
@@ -29,6 +28,8 @@ It does the following steps to retrieve suitable nodes.
 5. Move the probe list to the desognated folders
 
 The probe selection we used is based on the list as provided by RIPE Atlas on 11-Feb-2023 and can be retrieved [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). To reproduce our result list with the provided scripted please exchange the url in line 29 in the do_probe_selection.sh file with this link [https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). 
+
+
 
 In the following section the filter criteria are explained. 
 
@@ -69,7 +70,6 @@ We did not filter by starlink in tags as this did not generate additional nodes.
 
 ## Measurements
 
-
 We performed measurements over two different time horizons.
 One long term another over a shorter time frame with measurements more often.
 
@@ -79,19 +79,50 @@ The results of the long term measurements can be found [here](https://github.com
 In the following two parts we describe the parameters that we used to gather our measurements. First the parameters we used for the ping measurements, second the traceroute measurements. In general the parameters between the two different time horizons are the same except where it is highlighted. 
 
 ### Ping parameters
+|Parameter| Setting|
+| ----------- | ----------- |
+| Target | google server on the same continent (exception Africa which also uses europe ): <br/><ul><li>us-central1.gce.cloudharmony.net</li><li>europe-west3.gce.cloudharmony.net</li><li>asia-northeast2.gce.cloudharmony.net</li><li>australia-southeast1.gce.cloudharmony.net</li><li>southamerica-east1.gce.cloudharmony.net</li></ul>|
+| Interval (s) | <ul><li>Long time frame: 21600</li><li>Short time frame: 1800</li></ul>|
+| Packets | 3|
+| Size | 48 |
+| Address Family | IPV4 |
+| Resolve on Probe |False |
 
 
 
 ### Traceroute parameters
+|Parameter| Setting|
+| ----------- | ----------- |
+| Target | google server on the same continent (exception Africa which also uses europe ): <br/><ul><li>us-central1.gce.cloudharmony.net</li><li>europe-west3.gce.cloudharmony.net</li><li>asia-northeast2.gce.cloudharmony.net</li><li>australia-southeast1.gce.cloudharmony.net</li><li>southamerica-east1.gce.cloudharmony.net</li></ul>|
+| Interval (s) | <ul><li>Long time frame: 86400</li><li>Short time frame: 21600</li></ul>|
+| Protocol | TCP |
+| Address Family | IPV4 |
+| Response Timeout (ms)| 4000 |
+| Packets | 3 |
+| Port | 80 |
+| Size | 48 |
+| Paris | 16 |
+| Maximum Hops | 32 |
+| Resolve on Probe | False |
+
+## Disscusion
+
+By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
+
+
+![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
+Fig 2. Probe Location by country
 
 
 
-## Access Technology Comparison and Analysis
+# Access Technology Comparison and Analysis
 
-
-
-![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png)
-Fig 1.
+<figure align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+  <figcaption>Fig 1. Variation of average, minimum and maximum ping latency with technology.</figcaption>
+</figure>
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
 
@@ -101,8 +132,11 @@ Wired connections were the most stable of all technologies studied. The average 
 
 This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 2. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
 
-![alt text](https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png)
-Fig 2.
+<figure align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
+  <figcaption>Fig 2. Variation of latency with probe-data center distance in Europe.</figcaption>
+</figure>
+
 ### Wifi
 
 Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
