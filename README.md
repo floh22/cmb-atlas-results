@@ -113,9 +113,12 @@ By choosing our nodes like described above we cannot claim that it represents th
 A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
-
-![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
+<p align="center">
+  <img src="./images/countries.png" alt="Probe Location in pie chart"/>
+</p>
+<p align="center">
 Fig 2. Probe Location by country
+</p>
 
 # Results and Discussion
 
@@ -124,11 +127,11 @@ The analysis was conducted using latency as the major metric, and the experiment
 ## Access Technology Comparison and Analysis
 
 <p align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+  <img src="./images/average-ping-node-by-technology.png" alt="average, minimum, and maximum ping latency with technology"/>
 </p>
 
 <p align="center">
-    Fig 3. Variation of average, minimum and maximum ping latency with technology.
+    Fig 3. Variation of average, minimum, and maximum ping latency with technology.
 </p>
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
