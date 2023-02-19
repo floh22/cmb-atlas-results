@@ -165,7 +165,8 @@ function loadFiles(longTerm) {
 
             allMeasurements.push(...data);
 
-            console.log(`loaded ${fileNameNoEnding}`);
+            // too verbose
+            // console.log(`loaded ${fileNameNoEnding}`);
             filesLoaded++;
         }
     }
@@ -472,14 +473,16 @@ function getAvereageAndMaxAndMinPing(measurements) {
 function init() {
     verifyFiles().then(() => {
         console.log('files verified');
-        loadFiles(false);
+        loadFiles(true);
+
+        let pingMeasurements = allMeasurements.byType('ping');
 
 
-        let euPing = allMeasurements.byType('ping').byRegion('europe');
-        let asiaPing = allMeasurements.byType('ping').byRegion('asia');
-        let ocePing = allMeasurements.byType('ping').byRegion('oce');
-        let usPing = allMeasurements.byType('ping').byRegion('us');
-        let saPing = allMeasurements.byType('ping').byRegion('sa');
+        let euPing = pingMeasurements.byRegion('europe');
+        let asiaPing = pingMeasurements.byRegion('asia');
+        let ocePing = pingMeasurements.byRegion('oce');
+        let usPing = pingMeasurements.byRegion('us');
+        let saPing = pingMeasurements.byRegion('sa');
 
         let euHome = euPing.byCategory('home');
         let asiaHome = asiaPing.byCategory('home');
@@ -546,7 +549,6 @@ function init() {
 
         console.log('----------');
 
-
         //Latency vs distance plotting in europe
 
         /*
@@ -559,10 +561,6 @@ function init() {
         */
 
         console.log('----------');
-
-        let pingMeasurements = allMeasurements.byType('ping');
-
-
 
 
         let starlinkMeasurements = pingMeasurements.byCategory('lte');
@@ -639,7 +637,7 @@ function init() {
 
         plot.plot(starlinkTimeOfDayPlotData, starlinkLayout);
 
-        return;
+        
 
 
 
@@ -718,6 +716,13 @@ function init() {
         console.log(`starlink avg avg ping: ${avgAvgStarlink.toFixed(2)}`);
         console.log(`starlink avg max ping: ${maxAvgStarlink.toFixed(2)}`);
         console.log(`starlink avg min ping: ${minAvgStarlink.toFixed(2)}`);
+
+
+        return;
+
+
+
+        // ping statistic plotting
 
         let trace1 = {
             x: ['avg', 'max', 'min'],

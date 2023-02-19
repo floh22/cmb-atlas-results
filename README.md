@@ -124,9 +124,43 @@ Fig 2. Probe Location by country
 </p>
 
 <p align="center">
-    <figcaption>Fig 3. Variation of average, minimum and maximum ping latency with technology.</figcaption>
+    Fig 3. Variation of average, minimum and maximum ping latency with technology.
 </p>
 
+These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
+
+### Wired 
+
+Wired connections were the most stable of all technologies studied. The average best and worst case pings from wired connections within europe only had a range of 20ms, ranging from 29ms to 48.6ms, with the average at around 33ms. This small range shows that despite progress in wireless technologies, a physical connection is still the most reliable technology available and should be used when possible if reliability and low latency are priorities.
+
+This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 2. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
+
+<figure align="center">
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
+  <figcaption>Fig 6. Variation of latency with probe-data center distance in Europe.</figcaption>
+</figure>
+
+### Wifi
+
+Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
+
+In comparison to a wired connection, WIFI was observed to have an average ping 9ms slower, which is roughly in line with the overhead one could expect from the extra access point between the end device and the rest of the network.
+
+Average worst case deviation from the average ping was observed at around 40ms higher, meaning that with a global average of 76ms, the average worst case ping times of 113ms deviated relatively little from the average. This little deviation makes wifi the most comparable technology to a wired connection, though again, we are relatively sure this is due to the testing environment.
+
+### 3G / 4G / 5G
+
+To our surprise, this was observed to the worst performing technology in normal circumstances. While we had expected starlink devices to have the highest average latency, under normal conditions mobile data pings were around 80ms globaly.
+
+### Starlink
+
+On average, starlink performed very similarly to wired connections. Global average pings for starlink devices were measured to be within 2 - 4ms when averaging each devices pings. Certain regions however benefitted less from the satelite network than others. Regions such as the EU with a relatively dense and well connected wired population in average an additional 20ms latency on starlink connections instead of wired ones, whereas nodes in australia for example had comparable performance from both technologies in many cases.
+
+Where we perceive starlink's current biggest weakness to be is within its reliability. Over the course of one week we saw at least five different occurances where performance of the starlink technology strongly decreased for short durations, most noticable during the end of our testing period, with one occurance where pings using the starlink network failed entirely for over an hour. This suggests that starlink suffers from short term outages and performance issues, as can be seen in Fig 4. Long term study on Feb 18th at 11:00 and the Short term study on Feb 14th at 04:00.
+
+Additionally, the starlink network also seems to have longer periods of general instability, as can be seen in Fig 4. Long term study during the last day of observation. Performance on this day was degraded during multiple times and multiple pings were non responsive, leading to lower average ping times shown since pings that could not be received had a latency of 0ms, dropping the average significantly during this period.
+
+We can however conclude that when the starlink network does function properly, it allows for performance rivaling that of wired connections, and with further maturity of the technology and cross satelite communication, stability issues may become less common and the network a reliable and fast option, even for those in densly populated areas.
 <p align="center">
   <img alt="Starlink short term results graph" src="./images/SL_short.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
@@ -149,33 +183,5 @@ Fig 4. Starlink ping average in both long and short term tests
 <p align="center">
 Fig 5. Home and Wireless ping average in long term tests
 </p>
-
-These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
-
-### Wired 
-
-Wired connections were the most stable of all technologies studied. The average best and worst case pings from wired connections within europe only had a range of 20ms, ranging from 29ms to 48.6ms, with the average at around 33ms. This small range shows that despite progress in wireless technologies, a physical connection is still the most reliable technology available and should be used when possible if reliability and low latency are priorities.
-
-This was also the connection type where we could see the highest correlation between distance and latency. As we can see in Fig 2. and barring a few outliers, ping between server and device roughly linearly correlates to the distance between the device and our server. This Figure shows measurements from Europe, but all regions showed similar behavior.
-
-<figure align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/cmb-plot-distance-latency.png?raw=True" alt="alt text"/>
-  <figcaption>Fig 6. Variation of latency with probe-data center distance in Europe.</figcaption>
-</figure>
-
-### Wifi
-
-Wifi was observed to be the most stable and reliable of the wireless technologies. Our theory is that this is due to the relatively static and short range nature of wifi environments. We assume that nodes connected to the RIPE Atlas network and using WIFI connections are both stationary, and in relatively close proximity to the network access point. This provides the ideal enviromenment for a wifi connection, which would explain our stellar results from WIFI. 
-
-In comparison to a wired connection, WIFI actually was observed to have an average ping 9ms slower, which is roughly in line with the overhead one could expect from the extra access point between the end device and the rest of the network.
-
-Average worst case deviation from the average ping was observed at around 40ms higher, meaning that with a global average of 76ms, the average worst case ping times of 113ms deviated relatively little from the average.
-
-### 3G / 4G / 5G
-
-To our surprise, this was observed to the worst performing technology in normal circumstances. While we had expected starlink devices to have the highest average latency, under normal conditions mobile data pings were around 80ms globaly.
-
-### Starlink
-
 
 ## Conclusion
