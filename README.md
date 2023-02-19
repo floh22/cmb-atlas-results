@@ -110,7 +110,7 @@ In the following two parts we describe the parameters that we used to gather our
 ## Disscusion
 
 By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region [[1]].
-A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity, it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
 <p align="center">
@@ -196,6 +196,7 @@ Fig 5. Home and Wireless ping average in long term tests
 </p>
 
 # Conclusion
+RIPE Atlas as Global measurement platform provides various insights into the inner operations of the internet. While various factors affect the performance of the network, this report focuses mainly on the last-mile technology and the probe-data center distance. First, a direct proprtional relationship cannot be made between distance and latency, due to various other factors such as technology, network traffic and anomolies. However, a strong correlation exists between these two. Furthermore, in terms of technology, wired communication offers the maximum reliability, whereas the stability of starlink changes sporadically. Thus, based on our observations we can conclude that (1) the distance plays a significant role in the overall latency of communication; (2) despite the distance, the last mile-carrier should have high reliability to ensure stability of communication within the network; and (3) the measurement platform, time of measurement and various other anomolies can also have significant impact when finding the variation of latency with different factors.
 
 # References
 
