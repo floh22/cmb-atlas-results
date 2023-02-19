@@ -468,6 +468,48 @@ function getAvereageAndMaxAndMinPing(measurements) {
 }
 
 
+
+
+function getFirstHopRtt(measurements) {
+    res = [];
+    for(const measurement of measurements) {
+        let i = 1;
+        if(measurement.result.length < 2 ) {
+            if(measurement.result.length < 1) {
+                continue;
+            }
+            i = 0;
+        }
+
+        let hops = measurement.result[i].result;
+        let rtt = 0;
+        for (const hop of hops) {
+            rtt += hop.rtt;
+        }
+        rtt = rtt / hops.length;
+        res.push(rtt);
+    }
+
+    return res;
+}
+
+
+function getLastHopRtt(measurements) {
+    res = [];
+    for(const measurement of measurements) {
+        let hops = measurement.result[measurement.result.length - 1].result;
+        let rtt = 0;
+        for (const hop of hops) {
+            rtt += hop.rtt;
+        }
+        rtt = rtt / hops.length;
+        res.push(rtt);
+    }
+
+    return res;
+}
+
+
 // Main
 
 function init() {
@@ -476,6 +518,8 @@ function init() {
         loadFiles(true);
 
         let pingMeasurements = allMeasurements.byType('ping');
+
+        let tracerouteMeasurements = allMeasurements.byType('traceroute');
 
 
         let euPing = pingMeasurements.byRegion('europe');
@@ -635,7 +679,7 @@ function init() {
         };
 
 
-        plot.plot(starlinkTimeOfDayPlotData, starlinkLayout);
+        // plot.plot(starlinkTimeOfDayPlotData, starlinkLayout);
 
         
 
@@ -716,6 +760,77 @@ function init() {
         console.log(`starlink avg avg ping: ${avgAvgStarlink.toFixed(2)}`);
         console.log(`starlink avg max ping: ${maxAvgStarlink.toFixed(2)}`);
         console.log(`starlink avg min ping: ${minAvgStarlink.toFixed(2)}`);
+
+
+
+
+        let euTraceRouteMeasurements = tracerouteMeasurements.byRegion('europe');
+        let asiaTraceRouteMeasurements = tracerouteMeasurements.byRegion('asia');
+
+        let euTraceRouteMeasurementsHome = euTraceRouteMeasurements.byCategory('home');
+
+        let euTraceRouteMeasurementsLTE = euTraceRouteMeasurements.byCategory('lte');
+        let asiaTraceRouteMeasurementsLTE = asiaTraceRouteMeasurements.byCategory('lte');
+
+        let lteSecondEULTE = getFirstHopRtt(euTraceRouteMeasurementsLTE);
+        let lteLastEULTE = getLastHopRtt(euTraceRouteMeasurementsLTE);
+
+        let lteSecondEuHome = getFirstHopRtt(euTraceRouteMeasurementsHome);
+        let lteLastEuHome = getLastHopRtt(euTraceRouteMeasurementsHome);
+
+
+        let lteSecondAsiaLTE = getFirstHopRtt(asiaTraceRouteMeasurementsLTE);
+        let lteLastAsiaLTE = getLastHopRtt(asiaTraceRouteMeasurementsLTE);
+
+
+        
+        let diffEuLTE = lteLastEULTE.map((x, i) => x - lteSecondEULTE[i]);
+        let diffEuHome = lteLastEuHome.map((x, i) => x - lteSecondEuHome[i]);
+        let diffAsiaLTE = lteLastAsiaLTE.map((x, i) => x - lteSecondAsiaLTE[i]);
+
+
+        let proportionSecondToLastEuLTE = lteSecondEULTE.map((x, i) => x / lteLastEULTE[i]);
+        let proportionSecondToLastEuHome = lteSecondEuHome.map((x, i) => x / lteLastEuHome[i]);
+        let proportionSecondToLastAsiaLTE = lteSecondAsiaLTE.map((x, i) => x / lteLastAsiaLTE[i]);
+
+
+        //Get the mean of the differences
+        let proportionSecondToLastEuLTEMean = proportionSecondToLastEuLTE.reduce((a, b) => {
+            //check if the value is a number
+            if (!Number.isNaN(b)) {
+                return a + b;
+            }
+            return a;
+        }, 0) / proportionSecondToLastEuLTE.length;
+        let proportionSecondToLastEuHomeMean = proportionSecondToLastEuHome.reduce((a, b) => {
+            //check if the value is a number
+            if (!Number.isNaN(b)) {
+                return a + b;
+            }
+            return a;
+        }, 0) / proportionSecondToLastEuHome.length;
+        let proportionSecondToLastAsiaLTEMean = proportionSecondToLastAsiaLTE.reduce((a, b) => {
+            //check if the value is a number
+            if (!Number.isNaN(b)) {
+                return a + b;
+            }
+            return a;
+        }, 0) / proportionSecondToLastAsiaLTE.length;
+
+        console.log(`mean eu lte: ${proportionSecondToLastEuLTEMean.toFixed(2)}`);
+        console.log(`mean eu home: ${proportionSecondToLastEuHomeMean.toFixed(2)}`);
+        console.log(`mean asia lte: ${proportionSecondToLastAsiaLTEMean.toFixed(2)}`);
+
+        /*
+        let lteFirstFiltered = lteFirst.filter(function (value) {
+            return !Number.isNaN(value);
+        });
+
+        let lteLastFiltered = lteLast.filter(function (value) {
+            return !Number.isNaN(value);
+        });
+
+        */
 
 
         return;
