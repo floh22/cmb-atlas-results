@@ -5,10 +5,10 @@
 
 ## Probe Selection
 
-To rerun our probe selection run the bash script do_probe_selection.sh in the probe_selection folder
+To rerun our probe selection run the bash script do_probe_selection.sh in the [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection).
 
 This should first download the newest list of probes and filter with the same filters we applied. 
-Or selection was based on the probe list published on 11-Feb-2023 as found [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2)
+Our selection was based on the probe list published on 11-Feb-2023 as found [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2)
 To reproduce our filter on this date change the url in line 29 to this. 
 Our filtered list can be found in the archive file probe_list.zip.
 
@@ -24,27 +24,32 @@ This sction describes our filter settings for the different types of probes.
 We did not filter by starlink in tags as this did not generate additional nodes.
 
 #### Mobile Data
-    -> status: status == 1
-    -> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
-    and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
-    -> is taged with mobile technologie: output_dict = [x for x in data if '3g' in x['tags'] or '4g' in x['tags'] or 'lte' in x['tags'] or '5g' in x['tags'] or 'mobile' in x['tags']]
- 
+| Filter | Description |
+| ----------- | ----------- |
+| status == 1| we only uesd nodes that were reported as active| 
+| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we considere only wireless nodes without a wired connection to ISP|
+| tags don't contain  'datacenter'| we considered only nodes that were not installed in datacenters|
+|tags contain at least one of  ['3g', '4g', 'lte', '5g', 'mobile'] |we considered only nodes that are taged with mobile technologie|
 
+ 
 #### Home WI-FI:
--> status: status == 1
--> not connected via wire to ISP: utput_dict = [x for x in data if 'dsl' not in x['tags'] and 'vdsl' not in x['tags'] and 'vdsl2' not in x['tags'] 
-and 'adsl' not in x['tags'] and 'fibre' not in x['tags'] and 'datacenter' not in x['tags'] and 'ftth' not in x['tags']  ]
--> taged as wifi connected: output_dict = [x for x in data if 'wifi-mesh' in x['tags'] or 'system-wifi' in x['tags'] or 'public-wifi' in x['tags'] or 'wifi' in x['tags'] or 'wi-fi' in x['tags'] or 'free-wifi' in x['tags'] or 'wlan' in x['tags']]
-    
+| Filter | Description |
+| ----------- | ----------- |
+| status == 1| we only uesd nodes that were reported as active|
+| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we considere only wireless nodes without a wired connection to ISP|
+| tags don't contain  'datacenter'| we considered only nodes that were not installed in datacenters|
+|tags contain at least one of ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we considered only nodes that are taged with wifi|
+
 
 ### Home LAN
-    -> status: status == 1
-    -> is taged as wired to ISP: output_dict = [x for x in data if 'dsl'  in x['tags'] or 'vdsl'  in x['tags'] or 'vdsl2'  in x['tags'] or 'adsl'  in x['tags'] or 'fibre'  in x['tags']  or 'ftth'  in x['tags'] or 'cabel'  in x['tags']]
-    -> is not wireless connected: output_dict = [x for x in data if 'wifi-mesh' not in x['tags']  and 'system-wifi'  not in  x['tags']  and 'public-wifi'  not in  x['tags']  and 'wifi'  not in  x['tags']  and 'wi-fi'  not in  x['tags']  and 'free-wifi'  not in  x['tags']  and 'wlan'  not in  x['tags']]
-    -> is nearby to wireles nodes as defined by in same country: output_dict = [x for x in data if x['country_code'] in list_countrycode ]
-    -> is taged as home or office or academi: output_dict = [x for x in data if 'home' in x['tags'] or 'office' in x['tags'] or 'academic' in x['tags']] 
-
-
+| Filter | Description |
+| ----------- | ----------- |
+| status == 1| we only uesd nodes that were reported as active|
+|tags contain at least one of ['dsl', 'vdsl', 'vdsl2', 'adsl', 'cabel', 'fibre' or 'ftth']|we considere only nodes with a wired connection to ISP|
+|tags don't contain  ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we don't considered  nodes that are taged with wifi|
+|tags don't contain  ['3g', '4g', 'lte', '5g', 'mobile'] |we don't considered  nodes that are taged with mobile technologie|
+|tags contaion one of ['home', 'office' , or 'academic'] | we only considere probes taht are taged as home or office or academic|
+|country_code in list of country codes of either wifi, mobile or starlink| to esnure that we have nearby nodes we considered as many nodes that had the same country code as the others up to a maximum number of five per country.|
 
 ## Access Technology Comparison and Analysis
 
