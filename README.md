@@ -3,21 +3,34 @@
 
 ## Introduction
 
-# Mesurment Steps
+
+# Measurement Steps
+
+
+In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we show where and how we retrieved the data from the RIPE Platform by using the api provided by RIPE Atlas. 
 
 
 
 ## Probe Selection
 
-To rerun our probe selection run the bash script do_probe_selection.sh in the [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection).
+To reproduce our probe selection we provide the shell script do_probe_selection.sh in [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection). 
 
-This should first download the newest list of probes and filter with the same filters we applied. 
-Our selection was based on the probe list published on 11-Feb-2023 as found [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2)
-To reproduce our filter on this date change the url in line 29 to this. 
-Our filtered list can be found in the archive file probe_list.zip.
+The script has the following prerequisites:
+- wget
+- python3
+- bunzip2
 
-## Filter settings 
-This sction describes our filter settings for the different types of probes. 
+
+It does the following steps to retrieve suitable nodes. 
+1. Some setup, like creating folders and moving/copying files
+2. Retrieving the latest probe list provided by RIPE Atlas
+3. Filter the probes as per description below
+4. Separate the probes by type and continent 
+5. Move the probe list to the desognated folders
+
+The probe selection we used is based on the list as provided by RIPE Atlas on 11-Feb-2023 and can be retrieved [here](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). To reproduce our result list with the provided scripted please exchange the url in line 29 in the do_probe_selection.sh file with this link [https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2](https://ftp.ripe.net/ripe/atlas/probes/archive/2023/02/20230210.json.bz2). 
+
+In the following section the filter criteria are explained. 
 
 ### Starlink
 | Filter | Description |
@@ -59,6 +72,8 @@ We did not filter by starlink in tags as this did not generate additional nodes.
 
 We performed measurmets over two differrent time horizons. 
 One long term another over a shorter timeframe with mesurments more often. 
+
+
 
 The results of the long term measurments can be found [here](https://github.com/floh22/cmb-atlas-results/tree/master/long_term_measurements/measurements), the results of the other measurment [here](https://github.com/floh22/cmb-atlas-results/tree/master/measurements)
 
