@@ -7,7 +7,8 @@
 # Measurement Steps
 
 
-In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we show where and how we retrieved the data from the RIPE Platform by using the api provided by RIPE Atlas. 
+In this chapter we describe how we set up our measurements. In the first subsection we describe how we filtered out around 400 probes out of the over 12.8K probes that are deployed within the RIPE Atlas network. In the second subsection we describe what the parameters were that we used to conduct the measurements. In the last subsection we disscuss if and how probe selection represents the global mobile connectivity.
+
 
 
 ## Probe Selection
