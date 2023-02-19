@@ -1,7 +1,7 @@
 <h1 align="center">Connected Mobility Probe Report</h1>
 
 
-## Introduction
+# Introduction
 
 
 # Measurement Steps
@@ -107,17 +107,19 @@ In the following two parts we describe the parameters that we used to gather our
 
 ## Disscusion
 
-By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
-A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence(10.1145/3487552.3487854)[https://doi.org/10.1145/3487552.3487854].
+By choosing our nodes like described above we cannot claim that it represents the global mobile connectivity. The selected nodes do massively overrepresent internet users in Europe and North-America and even here it has been shown that the average connection of a RIPE probe is better than a typical connection of a given region [[1]].
+A proposed reason behind this overrepresentation of above average connection is that this lies in the voluntary of the RIPE Atlas platform. As the participating hosts of the probes are donating some of their network capacity it is inferred that they have an above average connection where a few bytes more traffic are not of much consequence [[1]].
 This is a problem that is inherent with the platform and not with our selection of nodes, so we are able to say that given the use of the RIPE Atlas our probe selection represents the  global mobile connectivity. 
 
 
 ![Probe Location in pie chart](https://github.com/floh22/cmb-atlas-results/blob/master/images/countries.png)
 Fig 2. Probe Location by country
 
+# Results and Discussion
 
+The analysis was conducted using latency as the major metric, and the experiments were varied based on 2 factors namely (1) the impact of different technologies used by networks, (2) the impact of distance between the probes and the cloud centers.
 
-# Access Technology Comparison and Analysis
+## Access Technology Comparison and Analysis
 
 <p align="center">
   <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
@@ -178,4 +180,9 @@ To our surprise, this was observed to the worst performing technology in normal 
 ### Starlink
 
 
-## Conclusion
+# Conclusion
+
+# References
+
+[1]: <https://doi.org/10.1145/3487552.3487854> "The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79." 
+[[1]]: The Khang Dang, Nitinder Mohan, Lorenzo Corneo, Aleksandr Zavodovski, Jörg Ott, and Jussi Kangasharju. 2021. Cloudy with a chance of short RTTs: analyzing cloud connectivity in the internet. In Proceedings of the 21st ACM Internet Measurement Conference (IMC '21). Association for Computing Machinery, New York, NY, USA, 62–79.
