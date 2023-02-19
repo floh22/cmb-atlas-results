@@ -15,7 +15,7 @@ In this chapter we describe how we set up our measurements. In the first subsect
 
 To reproduce our probe selection we provide the shell script do_probe_selection.sh in [probe_selection folder](https://github.com/floh22/cmb-atlas-results/tree/master/probe_selection). 
 
-The script has the following prerequisites:
+The script has the following packages as prerequisites:
 - wget
 - python3
 - bunzip2
@@ -35,47 +35,56 @@ In the following section the filter criteria are explained.
 ### Starlink
 | Filter | Description |
 | ----------- | ----------- |
-| asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered the probes by the ASN accociated with starlink |
-| status == 1| we only uesd nodes that were reported as active| 
+| asn_v4 == 14593 \|\| asn_v6 == 14593| We filtered by the Autonomous System Number associated with Starlink|
+| status == 1| We only used nodes that were reported as active| 
 
 We did not filter by starlink in tags as this did not generate additional nodes.
 
 #### Mobile Data
 | Filter | Description |
 | ----------- | ----------- |
-| status == 1| we only uesd nodes that were reported as active| 
-| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we considere only wireless nodes without a wired connection to ISP|
+| status == 1| we only used nodes that were reported as active|
+| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we consider only wireless nodes without a wired connection to ISP|
 | tags don't contain  'datacenter'| we considered only nodes that were not installed in datacenters|
-|tags contain at least one of  ['3g', '4g', 'lte', '5g', 'mobile'] |we considered only nodes that are taged with mobile technologie|
+|tags contain at least one of  ['3g', '4g', 'lte', '5g', 'mobile'] |we considered only nodes that are tagged with mobile technologie|
 
- 
 #### Home WI-FI:
 | Filter | Description |
 | ----------- | ----------- |
-| status == 1| we only uesd nodes that were reported as active|
-| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we considere only wireless nodes without a wired connection to ISP|
+| status == 1| we only used nodes that were reported as active|
+| tags don't contain ['dsl', 'vdsl', 'vdsl2', 'adsl', 'fibre' or 'ftth']| we consider only wireless nodes without a wired connection to ISP|
 | tags don't contain  'datacenter'| we considered only nodes that were not installed in datacenters|
-|tags contain at least one of ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we considered only nodes that are taged with wifi|
-
+|tags contain at least one of ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we considered only nodes that are tagged with wifi|
 
 ### Home LAN
 | Filter | Description |
 | ----------- | ----------- |
-| status == 1| we only uesd nodes that were reported as active|
-|tags contain at least one of ['dsl', 'vdsl', 'vdsl2', 'adsl', 'cabel', 'fibre' or 'ftth']|we considere only nodes with a wired connection to ISP|
-|tags don't contain  ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we don't considered  nodes that are taged with wifi|
-|tags don't contain  ['3g', '4g', 'lte', '5g', 'mobile'] |we don't considered  nodes that are taged with mobile technologie|
-|tags contaion one of ['home', 'office' , or 'academic'] | we only considere probes taht are taged as home or office or academic|
-|country_code in list of country codes of either wifi, mobile or starlink| to esnure that we have nearby nodes we considered as many nodes that had the same country code as the others up to a maximum number of five per country.|
-
-## Measurments 
-
-We performed measurmets over two differrent time horizons. 
-One long term another over a shorter timeframe with mesurments more often. 
+| status == 1| we only used nodes that were reported as active|
+|tags contain at least one of ['dsl', 'vdsl', 'vdsl2', 'adsl', 'cabel', 'fibre' or 'ftth']|we consider only nodes with a wired connection to ISP|
+|tags don't contain  ['wifi-mesh', 'system-wifi', 'public-wifi', 'wifi', 'wi-fi', 'free-wifi', 'wlan'] | we don't considered  nodes that are tagged with wifi|
+|tags don't contain  ['3g', '4g', 'lte', '5g', 'mobile'] |we don't considered  nodes that are tagged with mobile technologie|
+|tags contain one of ['home', 'office' , or 'academic'] | we only consider probes that are tagged as home or office or academic|
+|country_code in list of country codes of either wifi, mobile or starlink| to ensure that we have nearby nodes we considered as many nodes that had the same country code as the others up to a maximum number of five per country.|
 
 
+## Measurements
 
-The results of the long term measurments can be found [here](https://github.com/floh22/cmb-atlas-results/tree/master/long_term_measurements/measurements), the results of the other measurment [here](https://github.com/floh22/cmb-atlas-results/tree/master/measurements)
+
+We performed measurements over two different time horizons.
+One long term another over a shorter time frame with measurements more often.
+
+
+The results of the long term measurements can be found [here](https://github.com/floh22/cmb-atlas-results/tree/master/long_term_measurements/measurements), the results of the other measurement [here](https://github.com/floh22/cmb-atlas-results/tree/master/measurements)
+
+In the following two parts we describe the parameters that we used to gather our measurements. First the parameters we used for the ping measurements, second the traceroute measurements. In general the parameters between the two different time horizons are the same except where it is highlighted. 
+
+### Ping parameters
+
+
+
+### Traceroute parameters
+
+
 
 ## Access Technology Comparison and Analysis
 
