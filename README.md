@@ -120,7 +120,7 @@ Fig 2. Probe Location by country
 # Access Technology Comparison and Analysis
 
 <figure align="center">
-  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text"/>
+  <img src="https://github.com/floh22/cmb-atlas-results/blob/master/images/average-ping-node-by-technology.png?raw=True" alt="alt text" width="100%"/>
   <figcaption>Fig 3. Variation of average, minimum and maximum ping latency with technology.</figcaption>
 </figure>
 
@@ -131,8 +131,9 @@ Fig 2. Probe Location by country
   <img alt="Starlink long term results graph" src="./images/SL_long_term.png" width="45%">
 </p>
 
+<p align="center">
 Fig 4. Starlink ping average in both long and short term tests
-
+</p>
 
 
 
@@ -143,7 +144,9 @@ Fig 4. Starlink ping average in both long and short term tests
   <img alt="Wireless long term results graph" src="./images/LTE_short.png" width="45%">
 </p>
 
+<p align="center">
 Fig 5. Home and Wireless ping average in long term tests
+</p>
 
 These results were obtained by grouping all pings by the same node and then looking at the average, maximum, and minimum ping latency for every given node. These were then averaged across the node's specific connection technology.
 
